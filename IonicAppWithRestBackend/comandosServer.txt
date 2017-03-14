@@ -1,0 +1,3 @@
+python manage.py makemigrations -> registrar cambios de los modelos
+python manage.py migrate -> aplicar los cambios a la base de datos
+python manage.py runserver -> arrancar server

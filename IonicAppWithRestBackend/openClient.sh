@@ -1,0 +1,2 @@
+cd ionicApp/
+ionic serve
