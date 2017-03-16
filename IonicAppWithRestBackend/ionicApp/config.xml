@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.healthnwellness444433" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>TFG</name>
-  <description>&#xD;
-        An Ionic Framework and Cordova project.&#xD;
+  <description>&#xD;&#xD;
+        An Ionic Framework and Cordova project.&#xD;&#xD;
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">&#xD;
-      Ionic Framework Team&#xD;
+  <author email="hi@ionicframework" href="http://ionicframework.com/">&#xD;&#xD;
+      Ionic Framework Team&#xD;&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -21,6 +21,7 @@
   <allow-navigation href="https://*/*"/>
   <allow-navigation href="data:*"/>
   <allow-navigation href="http://192.168.1.33:8100"/>
+  <allow-navigation href="http://192.168.1.33:8101"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>

@@ -1,0 +1,7 @@
+1) Abrir un terminal (Windows+R -> cmd)
+2) Dirigirse a la ruta donde se encuentra ionicApp. Por ejemplo: 
+	cd C:\Users\Marc\Desktop\TFG\IonicAppWithRestBackend\ionicApp
+3) Ejecutar el cliente mediante el comando: 
+	ionic serve
+4) Para crear la apk:
+	ionic build android (o cambiar android por ios)
