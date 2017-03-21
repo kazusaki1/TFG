@@ -42,26 +42,23 @@ def buildModel():
     # input layer (None, dimensions, width, height)
     l_input = lasagne.layers.InputLayer((None, 3, 80, 80))
  
-    # primer convolutional layer, le pasamos el input layer
-    l_conv1 = lasagne.layers.Conv2DLayer(l_input, num_filters=32, filter_size=3)
-	# pool layer 2x2
+    # primera convolucion + RELU
+    l_conv1 = lasagne.layers.Conv2DLayer(l_input, num_filters=32, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
+	# maxpool 2x2
     l_pool1 = lasagne.layers.MaxPool2DLayer(l_conv1, pool_size=2)
 	
-    # segunda convolucion, le pasamos el resultado del maxpool
-    l_conv2 = lasagne.layers.Conv2DLayer(l_pool1, num_filters=64, filter_size=3)
-	# pool layer 2x2
+    # segunda convolucion + RELU
+    l_conv2 = lasagne.layers.Conv2DLayer(l_pool1, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
+	# maxpool 2x2
     l_pool2 = lasagne.layers.MaxPool2DLayer(l_conv2, pool_size=2)
  
-    # tercera convolucion
-    l_conv3 = lasagne.layers.Conv2DLayer(l_pool2, num_filters=64, filter_size=3)
-	# pool layer 2x2
+    # tercera convolucion + RELU
+    l_conv3 = lasagne.layers.Conv2DLayer(l_pool2, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
+	# maxpool 2x2
     l_pool3 = lasagne.layers.MaxPool2DLayer(l_conv3, pool_size=2)
- 
-    # layer de 1024 posiciones
-    l_dense1 = lasagne.layers.DenseLayer(l_pool3, num_units=1024)
-	
-	# dropout del 50%
-    l_dropout = lasagne.layers.DenseLayer(lasagne.layers.dropout(l_dense1, p=.5),num_units=1024,nonlinearity=lasagne.nonlinearities.rectify)
+ 	
+	# dropout 50% + RELU
+    l_dropout = lasagne.layers.DenseLayer(lasagne.layers.dropout(l_pool3, p=.5),num_units=1024,nonlinearity=lasagne.nonlinearities.rectify)
 	
     # la salida tiene tantas unidades como clases usemos y aplicamos un softmax
     l_output = lasagne.layers.DenseLayer(l_dropout, num_units=4, nonlinearity=lasagne.nonlinearities.softmax)
