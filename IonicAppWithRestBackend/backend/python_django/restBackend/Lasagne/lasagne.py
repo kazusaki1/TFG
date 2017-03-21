@@ -127,8 +127,8 @@ def getDatasetChunk(split):
     # obtenemos las imagenes correspondientes al batch
     for i in range(0, len(split), BATCH_SIZE):
         yield split[i:i+BATCH_SIZE]
- 
-def getNextImageBatch(split=TRAIN):    
+		
+def getNextImageBatch(split):    
  
     # inicializamos a 0 el array de la imagen 
     x_b = np.zeros((BATCH_SIZE, 3, 80, 80), dtype='float32')
@@ -150,8 +150,8 @@ def getNextImageBatch(split=TRAIN):
         yield x_b[:len(chunk)], y_b[:len(chunk)]
 		
 
-		
-CLASSES, TRAIN, VAL = parseDataset()
+CLASSES, TRAIN, VAL = parseDataset()		
+
 network = buildModel()
 	
 #theano variable for the class targets
@@ -211,7 +211,7 @@ for epoch in range(0, 100):
  
     #iterate over train split batches and calculate mean loss for epoch
     t_l = []
-    for image_batch, target_batch in getNextImageBatch():
+    for image_batch, target_batch in getNextImageBatch(TRAIN):
  
         #calling the training functions returns the current loss
         l = train_net(image_batch, target_batch)
