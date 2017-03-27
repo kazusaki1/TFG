@@ -23,63 +23,83 @@ import theano
 import theano.tensor as T
 
 import lasagne
+from sklearn.utils import shuffle
+from scipy import misc
 
 
 # ################## Download and prepare the MNIST dataset ##################
 # This is just some way of getting the MNIST dataset from an online location
 # and loading it into numpy arrays. It doesn't involve Lasagne at all.
 
+def loadImageAndTarget(path,classes):
+
+	# leemos la imagen
+	img = misc.imread(path)
+    # como la imagen tiene formato 80x80x3 lo modificamos a 3x80x80
+	img = np.transpose(img, (2,0,1))
+	
+	# usamos las carpetas de las clases como labels
+	label = path.split("\\")[-2]
+	# guardamos el index del label
+	index = classes.index(label)
+
+	# como necesitamos que la imagen sea un vector 4D lo convertimos	
+	img = img.reshape(-1, 3, 80, 80)
+	
+	return img, index
+
 def load_dataset():
-    # We first define a download function, supporting both Python 2 and 3.
-    if sys.version_info[0] == 2:
-        from urllib import urlretrieve
-    else:
-        from urllib.request import urlretrieve
+    
+	
+	# ruta de las clases
+	classes = [folder for folder in os.listdir('clases')]
 
-    def download(filename, source='http://yann.lecun.com/exdb/mnist/'):
-        print("Downloading %s" % filename)
-        urlretrieve(source + filename, filename)
+	# guardamos la ruta de cada imagen
+	images = []
+	for c in classes:
+		images += ([os.path.join('clases', c, path) for path in os.listdir(os.path.join('clases', c))])
 
-    # We then define functions for loading MNIST images and labels.
-    # For convenience, they also download the requested files if needed.
-    import gzip
+	# mezclamos las imagenes
+	images = shuffle(images, random_state=42)
 
-    def load_mnist_images(filename):
-        if not os.path.exists(filename):
-            download(filename)
-        # Read the inputs in Yann LeCun's binary format.
-        with gzip.open(filename, 'rb') as f:
-            data = np.frombuffer(f.read(), np.uint8, offset=16)
-        # The inputs are vectors now, we reshape them to monochrome 2D images,
-        # following the shape convention: (examples, channels, rows, columns)
-        data = data.reshape(-1, 1, 28, 28)
-        # The inputs come as bytes, we convert them to float32 in range [0,1].
-        # (Actually to range [0, 255/256], for compatibility to the version
-        # provided at http://deeplearning.net/data/mnist/mnist.pkl.gz.)
-        return data / np.float32(256)
+	# usamos un 10% de las imagenes para el testing set
+	vsplit = int(len(images) * 0.10)
+	train = images[:-vsplit]
+	test = images[-vsplit:]
+	
+	# usamos un 10% de las imagenes del training para el validation set
+	vsplit = int(len(train) * 0.10)
+	val = train[-vsplit:]
+	train = images[:-vsplit]
+	
+	X_train = np.zeros((len(train), 3, 80, 80), dtype='int32')
+	y_train = np.zeros((len(train)), dtype='int32')
+	X_val = np.zeros((len(val), 3, 80, 80), dtype='int32')
+	y_val = np.zeros((len(val)), dtype='int32')
+	X_test = np.zeros((len(test), 3, 80, 80), dtype='int32')
+	y_test = np.zeros((len(test)), dtype='int32')
+	
+	
+	cont = 0
+	for img in train:
+		X_train[cont], y_train[cont] = loadImageAndTarget(img, classes)
+		cont += 1
+	cont = 0
+	for img in val:
+		X_val[cont], y_val[cont] = loadImageAndTarget(img, classes)
+		cont += 1
+	cont = 0
+	for img in test:
+		X_test[cont], y_test[cont] = loadImageAndTarget(img, classes)
+		cont += 1
+	
+	print("CLASS LABELS:", classes)
+	print("TRAINING IMAGES:", len(train))
+	print("TESTING IMAGES:", len(test))
+	print("VALIDATION IMAGES:", len(val))
+	
+	return X_train, y_train, X_val, y_val, X_test, y_test
 
-    def load_mnist_labels(filename):
-        if not os.path.exists(filename):
-            download(filename)
-        # Read the labels in Yann LeCun's binary format.
-        with gzip.open(filename, 'rb') as f:
-            data = np.frombuffer(f.read(), np.uint8, offset=8)
-        # The labels are vectors of integers now, that's exactly what we want.
-        return data
-
-    # We can now download and read the training and test set images and labels.
-    X_train = load_mnist_images('train-images-idx3-ubyte.gz')
-    y_train = load_mnist_labels('train-labels-idx1-ubyte.gz')
-    X_test = load_mnist_images('t10k-images-idx3-ubyte.gz')
-    y_test = load_mnist_labels('t10k-labels-idx1-ubyte.gz')
-
-    # We reserve the last 10000 training examples for validation.
-    X_train, X_val = X_train[:-10000], X_train[-10000:]
-    y_train, y_val = y_train[:-10000], y_train[-10000:]
-
-    # We just return all the arrays in order, as expected in main().
-    # (It doesn't matter how we do this as long as we can read them again.)
-    return X_train, y_train, X_val, y_val, X_test, y_test
 
 
 # ##################### Build the neural network model #######################
@@ -162,17 +182,16 @@ def build_cnn(input_var=None):
     # and a fully-connected hidden layer in front of the output layer.
 
     # Input layer, as usual:
-    network = lasagne.layers.InputLayer(shape=(None, 1, 28, 28),
+    network = lasagne.layers.InputLayer(shape=(None, 3, 80, 80),
                                         input_var=input_var)
     # This time we do not apply input dropout, as it tends to work less well
     # for convolutional layers.
 
-    # Convolutional layer with 32 kernels of size 5x5. Strided and padded
+    # Convolutional layer with 32 kernels of size 3x3. Strided and padded
     # convolutions are supported as well; see the docstring.
     network = lasagne.layers.Conv2DLayer(
-            network, num_filters=32, filter_size=(5, 5),
-            nonlinearity=lasagne.nonlinearities.rectify,
-            W=lasagne.init.GlorotUniform())
+            network, num_filters=32, filter_size=(3, 3),
+            nonlinearity=lasagne.nonlinearities.rectify)
     # Expert note: Lasagne provides alternative convolutional layers that
     # override Theano's choice of which implementation to use; for details
     # please see http://lasagne.readthedocs.org/en/latest/user/tutorial.html.
@@ -180,21 +199,27 @@ def build_cnn(input_var=None):
     # Max-pooling layer of factor 2 in both dimensions:
     network = lasagne.layers.MaxPool2DLayer(network, pool_size=(2, 2))
 
-    # Another convolution with 32 5x5 kernels, and another 2x2 pooling:
+    # Another convolution with 64 3x3 kernels, and another 2x2 pooling:
     network = lasagne.layers.Conv2DLayer(
-            network, num_filters=32, filter_size=(5, 5),
+            network, num_filters=64, filter_size=(3, 3),
+            nonlinearity=lasagne.nonlinearities.rectify)
+    network = lasagne.layers.MaxPool2DLayer(network, pool_size=(2, 2))
+	
+	# Another convolution with 64 3x3 kernels, and another 2x2 pooling:
+    network = lasagne.layers.Conv2DLayer(
+            network, num_filters=64, filter_size=(3, 3),
             nonlinearity=lasagne.nonlinearities.rectify)
     network = lasagne.layers.MaxPool2DLayer(network, pool_size=(2, 2))
 
     # A fully-connected layer of 256 units with 50% dropout on its inputs:
     network = lasagne.layers.DenseLayer(
             lasagne.layers.dropout(network, p=.5),
-            num_units=256,
+            num_units=1024,
             nonlinearity=lasagne.nonlinearities.rectify)
 
     # And, finally, the 10-unit output layer with 50% dropout on its inputs:
     network = lasagne.layers.DenseLayer(
-            lasagne.layers.dropout(network, p=.5),
+            network,
             num_units=10,
             nonlinearity=lasagne.nonlinearities.softmax)
 
@@ -231,7 +256,7 @@ def iterate_minibatches(inputs, targets, batchsize, shuffle=False):
 # more functions to better separate the code, but it wouldn't make it any
 # easier to read.
 
-def main(model='mlp', num_epochs=500):
+def main(model='cnn', num_epochs=500):
     # Load the dataset
     print("Loading data...")
     X_train, y_train, X_val, y_val, X_test, y_test = load_dataset()
@@ -265,8 +290,7 @@ def main(model='mlp', num_epochs=500):
     # parameters at each training step. Here, we'll use Stochastic Gradient
     # Descent (SGD) with Nesterov momentum, but Lasagne offers plenty more.
     params = lasagne.layers.get_all_params(network, trainable=True)
-    updates = lasagne.updates.nesterov_momentum(
-            loss, params, learning_rate=0.01, momentum=0.9)
+    updates = lasagne.updates.adam(loss, params, learning_rate=0.00001)
 
     # Create a loss expression for validation/testing. The crucial difference
     # here is that we do a deterministic forward pass through the network,
@@ -294,7 +318,7 @@ def main(model='mlp', num_epochs=500):
         train_err = 0
         train_batches = 0
         start_time = time.time()
-        for batch in iterate_minibatches(X_train, y_train, 500, shuffle=True):
+        for batch in iterate_minibatches(X_train, y_train, 100, shuffle=True):
             inputs, targets = batch
             train_err += train_fn(inputs, targets)
             train_batches += 1
@@ -303,7 +327,7 @@ def main(model='mlp', num_epochs=500):
         val_err = 0
         val_acc = 0
         val_batches = 0
-        for batch in iterate_minibatches(X_val, y_val, 500, shuffle=False):
+        for batch in iterate_minibatches(X_val, y_val, 100, shuffle=False):
             inputs, targets = batch
             err, acc = val_fn(inputs, targets)
             val_err += err
@@ -322,7 +346,7 @@ def main(model='mlp', num_epochs=500):
     test_err = 0
     test_acc = 0
     test_batches = 0
-    for batch in iterate_minibatches(X_test, y_test, 500, shuffle=False):
+    for batch in iterate_minibatches(X_test, y_test, 100, shuffle=False):
         inputs, targets = batch
         err, acc = val_fn(inputs, targets)
         test_err += err
