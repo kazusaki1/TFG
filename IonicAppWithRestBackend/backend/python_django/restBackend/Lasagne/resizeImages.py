@@ -11,10 +11,21 @@ if not os.path.exists('clases'):
 	os.mkdir('clases')
 
 for ficheroActual in os.listdir(ruta):
-	if os.path.isdir(ruta+'/'+ficheroActual):
+	if os.path.isdir(ruta+'/'+ficheroActual):	
 		if not os.path.exists('clases/'+ficheroActual):
 			os.mkdir('clases/'+ficheroActual)
-		for imagen in os.listdir(ruta+'/'+ficheroActual):			
+		for imagen in os.listdir(ruta+'/'+ficheroActual):
+			if len(imagen) > 15:
+				cont = 0			
+				nuevaImagen = str(cont)+imagen[-10:]
+				nuevoFichero = ruta+ficheroActual+'/'+nuevaImagen
+				while os.path.exists(nuevoFichero):
+					cont += 1
+					nuevaImagen = str(cont)+imagen[-10:]
+					nuevoFichero = ruta+ficheroActual+'/'+nuevaImagen
+				os.rename(ruta+ficheroActual+'/'+imagen,nuevoFichero)
+				imagen = nuevaImagen
+				
 			img = Image.open(ruta+ficheroActual+'/'+imagen)
 			wpercent = (basewidth / float(img.size[0]))
 			hpercent = (baseheight / float(img.size[1]))
@@ -37,3 +48,4 @@ for ficheroActual in os.listdir(ruta):
 				background.paste(img, mask=img.split()[1])
 				background.paste(img, mask=img.split()[2])
 				background.save('clases/'+ficheroActual+'/'+imagen)
+			
