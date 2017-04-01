@@ -24,6 +24,15 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
+  .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+            templateUrl: 'templates/login.html'
+        }
+    }
+      
+  })
   .state('app.home',{
     url: '/home',
     views: {
@@ -42,8 +51,9 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
         }
     }
   })
+  
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/home');
+  $urlRouterProvider.otherwise('/app/login');
 });
 
 
