@@ -44,3 +44,12 @@ def sendImage(request):
 	return HttpResponse(request)
 	
 	
+def personas(request):
+	paco = {'nombre':'Paco','apellido':'Bombo','numero':1}
+	benito = {'nombre':'Benito','apellido':'Camela','numero':69}
+	amparo = {'nombre':'Amparo','apellido':'PoZi','numero':5}
+	personas = [paco, benito, amparo]
+
+	datos = json.dumps(personas)
+	print(request)
+	return HttpResponse(datos)

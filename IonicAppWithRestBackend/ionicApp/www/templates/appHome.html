@@ -6,10 +6,10 @@
         Bienvenido!!!
       </div>
       <div class="item item-text-wrap">
-          <div ng-repeat="smugler in smuglers" style="margin:4px;float:left;" class="list list-inset">
-            <!--<a class="button" href="/#/app/road/{{smugler.id}}"> {{road.fields.name}} </a>-->
-              <button class="button button-medium" ng-click="getDetails(smugler)">
-                  <b>{{smugler.name}}   {{smugler.lastname}}</b>
+          <div ng-repeat="persona in personas" style="margin:4px;float:left;" class="list list-inset">
+            <a class="button" href="/#/app/road/{{persona.nombre}}"> {{road.fields.nombre}} </a>
+              <button class="button button-medium" ng-click="getDetails(persona)">
+                  <b>{{persona.nombre}}   {{persona.apellido}}</b>
               </button>
           </div>
           <div style="width:100%; !important">
@@ -17,6 +17,23 @@
           </div>
       </div>
     </div>
-
+  <!--<div class="card">
+    <div class="item item-divider">
+      Junk time!
+      </div>
+    <div class = "row">
+     <div class = "col">Novedades</div>
+    </div>
+    <div class = "row">
+     <div class = "col">New event 1</div>
+    </div>
+    <div class = "row">
+     <div class = "col">New event 2</div>
+    </div>
+    <div class = "row">
+     <div class = "col">New event 3</div>
+    </div>
+  </div>
+  <button class="button icon ion-eye icon-right">Buscar eventos</button>-->
   </ion-content>
 </ion-view>
