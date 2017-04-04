@@ -1,6 +1,6 @@
 <ion-view view-title="Home">
   <ion-content>
-    <h2>{{header}}</h2>
+    <!--<h2>{{header}}</h2>
     <div class="card">
       <div class="item item-divider">
         Bienvenido!!!
@@ -16,24 +16,29 @@
               <span > Click their names to know more about them</span>
           </div>
       </div>
-    </div>
-  <!--<div class="card">
+    </div>-->
+  <div class="card">
     <div class="item item-divider">
       Junk time!
+    </div>
+      <div class = "row">
+        <div class = "col">Nombre del Evento</div>
+        <div class = "col">Coordenadas</div>
+        <div class = "col">Disponibilidad</div>
+        <div class = "col">Premio</div>
+        <div class = "col">Fecha de inicio</div>
       </div>
-    <div class = "row">
-     <div class = "col">Novedades</div>
-    </div>
-    <div class = "row">
-     <div class = "col">New event 1</div>
-    </div>
-    <div class = "row">
-     <div class = "col">New event 2</div>
-    </div>
-    <div class = "row">
-     <div class = "col">New event 3</div>
-    </div>
+      <div ng-repeat="evento in eventos">
+        <div class = "row">
+          <div class = "col">{{evento.nombre}}</div>
+          <div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
+          <div class = "col">{{evento.disponible}}</div><!--NO FUNCIONA NG-IF POR EL MOMENTO-->
+          <div class = "col">{{evento.recompensa}}</div>
+          <div class = "col">{{evento.start}}</div>
+        </div>
+      </div>
+    
   </div>
-  <button class="button icon ion-eye icon-right">Buscar eventos</button>-->
+  <button class="button icon ion-eye icon-right">Buscar eventos</button>
   </ion-content>
 </ion-view>

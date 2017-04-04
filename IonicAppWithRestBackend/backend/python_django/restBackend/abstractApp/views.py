@@ -53,3 +53,13 @@ def personas(request):
 	datos = json.dumps(personas)
 	print(request)
 	return HttpResponse(datos)
+
+def eventos(request):
+	crunch = {'nombre':'Busca tabletas!', 'coorX':'43', 'coorY':'12', 'recompensa':'2x1 BK'}
+	#kinder = {'nombre':'', 'coorX':'', 'coorY':'', 'recompensa':'', 'disponible':'', 'start':''}
+	pepsi = {'nombre':'Cafeina a toda vela!', 'coorX':'76', 'coorY':'43', 'recompensa':'Palo Selfie'}
+	
+	eventos = [crunch, pepsi]
+	datos = json.dumps(eventos)
+	print(request)
+	return HttpResponse(datos)

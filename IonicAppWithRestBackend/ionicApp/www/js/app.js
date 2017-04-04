@@ -38,7 +38,8 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
     views: {
         'menuContent': {
             templateUrl: 'templates/appHome.html',
-            controller: 'HomeCtrl'
+            controller: 'EventCtrl'
+            //controller: 'HomeCtrl'
         }
     }
   })
@@ -53,7 +54,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
   })
   
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/login');
+  $urlRouterProvider.otherwise('/app/home');
 });
 
 
