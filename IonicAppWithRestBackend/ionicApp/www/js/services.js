@@ -82,9 +82,11 @@ angular.module('myIonicApp')
     return {
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: source,
-      allowEdit: false,
+      allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
       popoverOptions: CameraPopoverOptions,
+      targetWidth: 80,
+      targetHeight: 80,
       saveToPhotoAlbum: false
     };
   }

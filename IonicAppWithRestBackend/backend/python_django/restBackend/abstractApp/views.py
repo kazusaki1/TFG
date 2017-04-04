@@ -5,6 +5,8 @@ from django.core.files.base import ContentFile
 import uuid
 from .models import Image
 import json
+from .Lasagne.recognizeImage import main
+
 # Create your views here.
 def index(request):
     return HttpResponse("Chewie we're home")
@@ -40,8 +42,10 @@ def sendImage(request):
 	x = Image()
 	x.img = ContentFile(b64decode(imgstr), name=image_name)
 	x.save()
-
-	return HttpResponse(request)
+	label = main(image_name)
+	print(label)
+	
+	return HttpResponse(label)
 	
 	
 def personas(request):
@@ -63,3 +67,5 @@ def eventos(request):
 	datos = json.dumps(eventos)
 	print(request)
 	return HttpResponse(datos)
+	
+	
