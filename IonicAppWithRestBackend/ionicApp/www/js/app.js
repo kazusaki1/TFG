@@ -52,6 +52,14 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
         }
     }
   })
+  .state('app.eventos',{
+    url: '/foto',
+    views: {
+        'menuContent': {
+            templateUrl: 'templates/eventos.html'
+        }
+    }
+  })
   
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');

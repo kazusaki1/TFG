@@ -10,3 +10,13 @@
 .scroll{
 	height: 100%;
 }
+
+.app-icon {
+    background-color: #fff;
+    background: url('../img/marc.jpg') center;
+    background-size: cover;
+    border-radius: 50%;
+    height: 125px;
+    margin: 0 auto;
+    width: 125px;
+}

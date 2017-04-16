@@ -2254,6 +2254,19 @@
   transform: translate3d(0, 0, 0);
   width: 100%; }
 
+.hero2 {
+  background-size: cover;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+  color: #fff;
+  height: 85px;
+  position: relative;
+  text-align: center;
+  -webkit-transition: all 1s cubic-bezier(0.55, 0, 0.1, 1);
+  transition: all 1s cubic-bezier(0.55, 0, 0.1, 1);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  width: 100%; }
+
 .flat, .flat.tabs, .flat.button, .flat.button.icon, .flat.hero {
   box-shadow: none;
   -webkit-box-shadow: none; }
@@ -2261,6 +2274,10 @@
 .social-login {
     position: fixed;
     bottom: 0;
+}
+
+.centrado{
+  text-align: center;
 }
 /**
  * Resets
