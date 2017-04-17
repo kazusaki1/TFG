@@ -28,8 +28,8 @@ module.controller('HomeCtrl',function($scope,$http,$ionicPopup,ApiEndpoint){
             console.log("ERROR");
         });
     }
-    
+    */
 })
-*/
+
 
 

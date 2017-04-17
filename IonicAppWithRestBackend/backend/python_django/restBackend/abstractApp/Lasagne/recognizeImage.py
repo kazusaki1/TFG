@@ -254,11 +254,13 @@ def main(image_name):
 		cmatrix += confusion_matrix(np.argmax(t, axis=1), np.argmax(p, axis=1))
 	 
 	def showConfusionMatrix():
-	 
+	 	
+		global cmatrix
 		#new figure
 		plt.figure(1)
 		plt.clf()
 	 
+		print(cmatrix)
 		#show matrix
 		plt.imshow(cmatrix, interpolation='nearest', cmap=plt.cm.Blues)
 		plt.title('Confusion Matrix')
@@ -318,7 +320,7 @@ def main(image_name):
 
 
 	#we need to get the index of our label from CLASSES
-	index = CLASSES.index("kinder logo")
+	index = CLASSES.index("random")
 
 	#allocate array for target
 	target = np.zeros((10), dtype='float32')
@@ -331,8 +333,9 @@ def main(image_name):
 	#we can adjust array dimension with reshape
 	image = image.reshape(-1, 3, 80, 80)
 	target = target.reshape(-1, 10)
-	prediction, l, a = test_net(image, target)
 	#mostrarConfusionMatrix()
+	prediction, l, a = test_net(image, target)
+	
 
 	print(CLASSES)
 	print(target)

@@ -2,7 +2,9 @@
   "name": "HelloIonic",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.1.0"
+    "ionic": "driftyco/ionic-bower#1.1.0",
+    "lodash": "^4.17.4",
+    "livereload-js": "^2.2.1"
   },
   "dependencies": {
     "ngCordova": "^0.1.27-alpha"

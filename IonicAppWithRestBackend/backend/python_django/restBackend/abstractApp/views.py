@@ -3,9 +3,10 @@ from django.views.decorators.csrf import csrf_exempt
 from base64 import b64decode
 from django.core.files.base import ContentFile
 import uuid
-from .models import Image
+from .models import Imagen, Usuario, Evento, EventoParada, EventoLimitado, UsuarioEventoParada, UsuarioEventoLimitado
 import json
 from .Lasagne.recognizeImage import main
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -27,19 +28,18 @@ def details(request,id):
         species = 'Weequay'
     return HttpResponse(species)
 
-def ProcessFile(request,texto):
+def processFile(request,texto):
 	print(request)
 	print(texto)
 	return HttpResponse(texto)
 	
-@csrf_exempt 	
-
+@csrf_exempt
 def sendImage(request):
 	image_data = str(request.body,"UTF-8")
 	format, imgstr = image_data.split(';base64,') 
 	ext = format.split('/')[-1] 
 	image_name = str(uuid.uuid4()) + ".jpeg"
-	x = Image()
+	x = Imagen()
 	x.img = ContentFile(b64decode(imgstr), name=image_name)
 	x.save()
 	label = main(image_name)
@@ -59,12 +59,20 @@ def personas(request):
 	return HttpResponse(datos)
 
 def eventos(request):
-	crunch = {'nombre':'Busca tabletas!', 'coorX':'43', 'coorY':'12', 'recompensa':'2x1 BK'}
-	#kinder = {'nombre':'', 'coorX':'', 'coorY':'', 'recompensa':'', 'disponible':'', 'start':''}
-	pepsi = {'nombre':'Cafeina a toda vela!', 'coorX':'76', 'coorY':'43', 'recompensa':'Palo Selfie'}
+
+	# Guardar evento en base de datos
+	#today = datetime.today()
+	#today = str(today).split(".")[0]
+	#eventos = Eventos(label='damm',nombre='Busca tabletas!',coorX='43',coorY='12',recompensa='2x1 BK',disponible='True',start=today).save()
+	eventos = UsuarioEventoParada.objects.all()
+	prepareToSend = []
+	for evento in eventos:
+		print(evento.isAvaible())
+		prepareToSend.append(evento.returnJSON())
 	
-	eventos = [crunch, pepsi]
-	datos = json.dumps(eventos)
+	
+	datos = json.dumps(prepareToSend)
+
 	print(request)
 	return HttpResponse(datos)
 	

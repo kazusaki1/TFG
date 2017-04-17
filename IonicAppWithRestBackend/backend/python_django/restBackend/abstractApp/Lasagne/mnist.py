@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 
 ################### DATASET HANDLING ####################
-DATASET_PATH = os.getcwd()+'\\abstractApp\\Lasagne\\' #change the path to your dataset folder here
+DATASET_PATH = os.getcwd()+'\\' #change the path to your dataset folder here
 def parseDataset():
  
     #we use subfolders as class labels
@@ -170,7 +170,7 @@ def loadImageAndTarget(path):
 
     return img, target
 
-#a reasonable size for one batch is 99
+#a reasonable size for one batch is 100
 BATCH_SIZE = 100
 
 def getDatasetChunk(split):
@@ -282,20 +282,27 @@ def showConfusionMatrix():
     plt.pause(0.5)
    
    
-   
+
+with np.load('model.npz') as f:
+    param_values = [f['arr_%d' % i] for i in range(len(f.files))]
+lasagne.layers.set_all_param_values(NET, param_values)
    
  ###################### TRAINING #########################
+ 
 print("START TRAINING...")
+
 train_loss = []
 val_loss = []
 val_accuracy = []
 total_time = time.time()
-for epoch in range(0, 2000):
+cont = 0
+
+for epoch in range(0, 1):
  
     #start timer
     start_time = time.time()
     
-    #clearConfusionMatrix()
+    clearConfusionMatrix()
  
     #iterate over train split batches and calculate mean loss for epoch
     t_l = []
@@ -314,7 +321,7 @@ for epoch in range(0, 2000):
         prediction_batch, l, a = test_net(image_batch, target_batch)
         v_l.append(l)
         v_a.append(a)
-        #updateConfusionMatrix(prediction_batch,target_batch)
+        updateConfusionMatrix(prediction_batch,target_batch)
  
  
     #calculate stats for epoch
@@ -322,14 +329,19 @@ for epoch in range(0, 2000):
     val_loss.append(np.mean(v_l))
     val_accuracy.append(np.mean(v_a))
  
-    #print stats for epoch
+    if cont == 600 or cont == 700 or cont == 800 or cont == 900 or cont == 1000 or cont == 1100 or cont == 1200 or cont == 1300 or cont == 1400 or cont == 1500 or cont == 1600 or cont == 1700 or cont == 1800 or cont == 1900: 
+        np.savez(DATASET_PATH+'model'+str(cont)+'.npz', *lasagne.layers.get_all_param_values(NET))
+	#print stats for epoch
     print("EPOCH:", epoch)
     print("TRAIN LOSS:", train_loss[-1])
     print("VAL LOSS:", val_loss[-1])
     print("VAL ACCURACY:", (int(val_accuracy[-1] * 1000) / 10.0), "%")
     print("TIME:", (time.time() - start_time), "s")
  
-    #showConfusionMatrix()
+    cont += 1
+    showConfusionMatrix()
+	
+
 
 print("TOTAL TIME:", (time.time() - total_time), "s")
 print("TRAINING DONE!")
