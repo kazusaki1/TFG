@@ -18,7 +18,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
@@ -28,7 +28,8 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
       url: '/login',
       views: {
         'menuContent': {
-            templateUrl: 'templates/login.html'
+            templateUrl: 'templates/login.html',
+            controller: 'LoginCtrl'
         }
     }
       
@@ -38,7 +39,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
     views: {
         'menuContent': {
             templateUrl: 'templates/appHome.html',
-            controller: 'EventCtrl'
+            controller: 'MapCtrl'
             //controller: 'HomeCtrl'
         }
     }
@@ -52,15 +53,25 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
         }
     }
   })
-  .state('app.eventos',{
-    url: '/foto',
+  .state('app.lista',{
+    url: '/lista',
     views: {
         'menuContent': {
-            templateUrl: 'templates/eventos.html'
+            templateUrl: 'templates/lista.html',
+            controller: 'ListCtrl'
+        }
+    }
+  })  
+  .state('app.evento',{
+    url: '/evento/:id',
+    views: {
+        'menuContent': {
+            templateUrl: 'templates/evento.html',
+            controller: 'EventCtrl'
         }
     }
   })
-  
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/login');
 });

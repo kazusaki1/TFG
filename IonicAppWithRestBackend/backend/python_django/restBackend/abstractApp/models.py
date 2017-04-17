@@ -131,7 +131,7 @@ class UsuarioEventoParada(models.Model):
     def returnJSON(self):
         last_use_formated = str(self.last_use).split("+")[0]
         cooldown_formated = str(self.cooldown)
-        return {'brand':self.event.event.brand,'event_name':self.event.event.event_name,'event_description':self.event.event.event_description,'coorX':self.event.event.coorX,'coorY':self.event.event.coorY,'reward':self.event.event.reward,'last_use':last_use_formated,'cooldown':cooldown_formated}
+        return {'id':self.event.event.id,'brand':self.event.event.brand,'event_name':self.event.event.event_name,'event_description':self.event.event.event_description,'coorX':self.event.event.coorX,'coorY':self.event.event.coorY,'reward':self.event.event.reward,'last_use':last_use_formated,'cooldown':cooldown_formated}
 
     def isAvaible(self):
         up_time = self.last_use+timedelta(days=self.cooldown.days,seconds=self.cooldown.seconds)

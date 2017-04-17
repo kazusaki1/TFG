@@ -1,0 +1,35 @@
+<ion-view view-title="Eventos">
+  <ion-content>
+  <div class="hero2" style="background-image: url('img/login.png');">
+            <div class="content">
+                <div class="avatar" style="background-image: url('img/marc.jpg');"></div>
+                <h3><a class="dark">Benito Camela</a></h3>
+            </div>
+        </div>
+    <div class="card">
+      <div class="item item-divider">
+        Junk time!
+      </div>
+        <div class = "row">
+          <div class = "col">Marca</div>
+          <div class = "col">Nombre del Evento</div>
+          <div class = "col">Descripcion del Evento</div>
+          <div class = "col">Coordenadas</div>
+          <div class = "col">Recompensa</div>
+          <div class = "col">Tiempo de recarga</div>
+          <div class = "col">Ultimo uso</div>
+        </div>
+          <div class = "row">
+            <div class = "col">{{evento[0].brand}}</div>
+            <div class = "col">{{evento[0].event_name}}</div>
+            <div class = "col">{{evento[0].event_description}}</div>
+            <div class = "col">{{evento[0].coorX}},{{evento[0].coorY}}</div>
+            <div class = "col">{{evento[0].reward}}</div>
+            <div class = "col">{{evento[0].cooldown}}</div>
+            <div class = "col">{{evento[0].last_use}}</div>
+          </div>
+      
+    </div>
+    
+  </ion-content>
+</ion-view>

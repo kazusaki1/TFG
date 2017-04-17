@@ -21,13 +21,6 @@ def smugglers(request):
 	print(request)
 	return HttpResponse(data)
 
-
-def details(request,id):
-    species = 'Human'
-    if id == '1':
-        species = 'Weequay'
-    return HttpResponse(species)
-
 def processFile(request,texto):
 	print(request)
 	print(texto)
@@ -58,7 +51,7 @@ def personas(request):
 	print(request)
 	return HttpResponse(datos)
 
-def eventos(request):
+def lista(request):
 
 	# Guardar evento en base de datos
 	#today = datetime.today()
@@ -67,13 +60,21 @@ def eventos(request):
 	eventos = UsuarioEventoParada.objects.all()
 	prepareToSend = []
 	for evento in eventos:
-		print(evento.isAvaible())
 		prepareToSend.append(evento.returnJSON())
 	
 	
 	datos = json.dumps(prepareToSend)
 
-	print(request)
 	return HttpResponse(datos)
 	
+def evento(request,id):
+
+    print(id)
+    evento = UsuarioEventoParada.objects.get(id=id)
+    prepareToSend = []
+    prepareToSend.append(evento.returnJSON())
+    datos = json.dumps(prepareToSend)
+    print(datos)
+    
+    return HttpResponse(datos)
 	
