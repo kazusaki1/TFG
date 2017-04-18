@@ -12,22 +12,27 @@
       </div>
         <div class = "row">
           <div class = "col">Nombre del Evento</div>
-          <div class = "col">Coordenadas</div>
-          <div class = "col">Disponibilidad</div>
+          <!--<div class = "col">Coordenadas</div>-->
           <div class = "col">Premio</div>
           <div class = "col">Fecha de inicio</div>
         </div>
+
         <div ng-repeat="evento in lista">
+
           <div class = "row">
-            <div class = "col">{{evento.nombre}}</div>
-            <div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
-            <div class = "col">{{evento.disponible}}</div>
-            <div class = "col">{{evento.recompensa}}</div>
-            <div class = "col">{{evento.start}}</div>
+            <div class = "col">{{evento.event_name}}</div>
+            <!--<div class = "col">{{evento.coorX}},{{evento.coorY}}</div>-->
+            <div class = "col">{{evento.reward}}</div>
+            <div class = "col">{{evento.ini_date}}</div>
           </div>
+
         </div>
       
     </div>
-    
+    <ion-card class="card card-background-page">
+    <img src="https://assets.hipmunk.com/assets/dest_head/4da3309a2a0ceb6e950109f6"/>
+    <div class="card-title">São Paulo</div>
+    <div class="card-subtitle">41 Listings</div>
+  </ion-card>
   </ion-content>
 </ion-view>
