@@ -1,20 +1,21 @@
-<ion-view view-title="Eventos">
+<ion-view view-title="Eventos" style="background-image: url('img/fondo2.jpg');">
   <ion-content>
-  <div class="hero2" style="background-image: url('img/login.png');">
+  <div class="hero2" style="background-image: url('img/fondo2.jpg');">
             <div class="content">
                 <div class="avatar" style="background-image: url('img/marc.jpg');"></div>
-                <h3><a class="dark">Benito Camela</a></h3>
+                <h3><a class="dark">Usuario</a></h3>
             </div>
         </div>
-    <div class="card">
-      <div class="item item-divider">
+    
+      <div class="item item-divider" style="background-color: transparent;">
         Junk time!
       </div>
         <div class = "row">
-          <div class = "col">Nombre del Evento</div>
+          <div class = "col">Evento</div>
           <!--<div class = "col">Coordenadas</div>-->
           <div class = "col">Premio</div>
           <div class = "col">Fecha de inicio</div>
+          <div class = "col">Participas?</div>
         </div>
 
         <div ng-repeat="evento in lista">
@@ -24,15 +25,11 @@
             <!--<div class = "col">{{evento.coorX}},{{evento.coorY}}</div>-->
             <div class = "col">{{evento.reward}}</div>
             <div class = "col">{{evento.ini_date}}</div>
-          </div>
+            <td><a href="#/app/evento/{{evento.id}}" class="btn"><i class="glyphicon glyphicon-edit"></i>Go</a></td>
+            <!--<button ui-sref="app.evento({id: '{{evento.id}}'")>Ir</button> </div>-->
 
         </div>
       
-    </div>
-    <ion-card class="card card-background-page">
-    <img src="https://assets.hipmunk.com/assets/dest_head/4da3309a2a0ceb6e950109f6"/>
-    <div class="card-title">São Paulo</div>
-    <div class="card-subtitle">41 Listings</div>
-  </ion-card>
+  
   </ion-content>
 </ion-view>
