@@ -70,7 +70,7 @@ def lista(request):
 def evento(request,id):
 
     print(id)
-    evento = UsuarioEventoParada.objects.get(id=id)
+    evento = EventoLimitado.objects.get(event_id=id)
     prepareToSend = []
     prepareToSend.append(evento.returnJSON())
     datos = json.dumps(prepareToSend)

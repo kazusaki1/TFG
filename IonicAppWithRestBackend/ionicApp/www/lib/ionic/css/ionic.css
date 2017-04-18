@@ -2292,9 +2292,17 @@
  * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
  * http://cssreset.com
  */
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, i, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, fieldset, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, i, u, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, fieldset, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
-  padding: 0;
+  padding: 0px;
+  border: 0;
+  vertical-align: baseline;
+  font: inherit;
+  font-size: 100%; }
+
+h1{
+  margin: 0;
+  padding: -10px;
   border: 0;
   vertical-align: baseline;
   font: inherit;
@@ -7416,6 +7424,9 @@ a.button {
 .padding {
   padding: 10px; }
 
+.paddingLogin {
+  padding: 30px; }
+
 .padding-top, .padding-vertical {
   padding-top: 10px; }
 
@@ -7733,3 +7744,34 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+.positive-900-bg,
+.button-positive-900,
+.bar .button-positive-900,
+.header-positive-900,
+.button-bar-positive-900,
+.bar-positive-900,
+.positive-900-border,
+.positive-900-bg:hover,
+.button-positive-900:hover,
+.bar .button-positive-900:hover,
+.header-positive-900:hover,
+.button-bar-positive-900:hover,
+.bar-positive-900:hover,
+.positive-900-border:hover,
+.positive-900-bg:active,
+.bar .button-positive-900:active,
+.button-positive-900:active,
+.header-positive-900:active,
+.button-bar-positive-900:active,
+.bar-positive-900:active,
+.positive-900-border:active,
+.positive-900-bg.activated,
+.button-positive-900.activated,
+.bar .button-positive-900.activated,
+.header-positive-900.activated,
+.button-bar-positive-900.activated,
+.bar-positive-900.activated,
+.positive-900-border.activated {
+  background-color: #1A237E;
+  color: #fff; }

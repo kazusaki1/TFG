@@ -18,6 +18,10 @@
     border-radius: 50%;
     height: 125px;
     margin: 0 auto;
+    /*margin-left: auto;
+    margin-top: 10;
+    margin-bottom: 0;
+    margin-right: auto;*/
     width: 125px;
 }
 
@@ -25,31 +29,28 @@
 
 }
 
-`.card-background-page {
+.card-background-page {
+
+  ion-card {
     position: relative;
     text-align: center;
-    background-blend-mode: multiply;
-
   }
-
-.card-image-blend {
-  opacity: 80%;
-}
 
   .card-title {
     position: absolute;
-    top: 69%;
+    top: 36%;
     font-size: 2.0em;
     width: 100%;
-    text-align: left;
+    font-weight: bold;
     color: #fff;
   }
 
-  .card-title-home {
+  .card-subtitle {
+    font-size: 1.0em;
     position: absolute;
-    top: 69%;
-    font-size: 2.0em;
+    top: 52%;
     width: 100%;
-    text-align: center;
     color: #fff;
-  }`
+  }
+
+}

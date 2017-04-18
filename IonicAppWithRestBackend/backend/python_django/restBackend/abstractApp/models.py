@@ -104,7 +104,7 @@ class EventoLimitado(models.Model):
     def returnJSON(self):
         ini_date_formated = str(self.ini_date).split("+")[0]
         exp_date_formated = str(self.exp_date).split("+")[0]
-        return {'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'coorX':self.event.coorX,'coorY':self.event.coorY,'reward':self.event.reward,'ini_date':ini_date_formated,'exp_date':exp_date_formated}
+        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'coorX':self.event.coorX,'coorY':self.event.coorY,'reward':self.event.reward,'ini_date':ini_date_formated,'exp_date':exp_date_formated}
     
     def isAvaible(self):
         ini_date_formated = str(self.ini_date).split("+")[0]
