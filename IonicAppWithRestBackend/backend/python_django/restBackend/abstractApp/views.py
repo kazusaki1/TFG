@@ -57,7 +57,7 @@ def lista(request):
 	#today = datetime.today()
 	#today = str(today).split(".")[0]
 	#eventos = Eventos(label='damm',nombre='Busca tabletas!',coorX='43',coorY='12',recompensa='2x1 BK',disponible='True',start=today).save()
-	eventos = UsuarioEventoParada.objects.all()
+	eventos = EventoLimitado.objects.all()
 	prepareToSend = []
 	for evento in eventos:
 		prepareToSend.append(evento.returnJSON())
