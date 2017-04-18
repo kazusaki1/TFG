@@ -89,6 +89,12 @@ class EventoParada(models.Model):
     def __str__(self):
         return '['+str(self.event.id)+'] '+self.event.brand+': '+self.event.event_name
 
+    def returnJSON(self):
+        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'event_type':'parada','coorX':self.event.coorX,'coorY':self.event.coorY,'reward':self.event.reward}
+
+    def getCoord(self):
+        return {'x':self.event.coorX,'y':self.event.coorY}
+
 
 class EventoLimitado(models.Model):
     event = models.OneToOneField(Evento,on_delete=models.CASCADE,unique=True,verbose_name='Evento')
@@ -104,7 +110,7 @@ class EventoLimitado(models.Model):
     def returnJSON(self):
         ini_date_formated = str(self.ini_date).split("+")[0]
         exp_date_formated = str(self.exp_date).split("+")[0]
-        return {'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'coorX':self.event.coorX,'coorY':self.event.coorY,'reward':self.event.reward,'ini_date':ini_date_formated,'exp_date':exp_date_formated}
+        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'event_type':'limitado','coorX':self.event.coorX,'coorY':self.event.coorY,'reward':self.event.reward,'ini_date':ini_date_formated,'exp_date':exp_date_formated}
     
     def isAvaible(self):
         ini_date_formated = str(self.ini_date).split("+")[0]
@@ -113,6 +119,9 @@ class EventoLimitado(models.Model):
         if (date_today_formated > ini_date_formated) and (date_today_formated < exp_date_formated):
             return True
         return False
+
+    def getCoord(self):
+        return {'x':self.event.coorX,'y':self.event.coorY}
 
 
 class UsuarioEventoParada(models.Model):    
@@ -131,7 +140,7 @@ class UsuarioEventoParada(models.Model):
     def returnJSON(self):
         last_use_formated = str(self.last_use).split("+")[0]
         cooldown_formated = str(self.cooldown)
-        return {'id':self.event.event.id,'brand':self.event.event.brand,'event_name':self.event.event.event_name,'event_description':self.event.event.event_description,'coorX':self.event.event.coorX,'coorY':self.event.event.coorY,'reward':self.event.event.reward,'last_use':last_use_formated,'cooldown':cooldown_formated}
+        return {'id':str(self.event.id),'brand':self.event.event.brand,'event_name':self.event.event.event_name,'event_description':self.event.event.event_description,'event_type':'parada','coorX':self.event.event.coorX,'coorY':self.event.event.coorY,'reward':self.event.event.reward,'last_use':last_use_formated,'cooldown':cooldown_formated}
 
     def isAvaible(self):
         up_time = self.last_use+timedelta(days=self.cooldown.days,seconds=self.cooldown.seconds)
@@ -140,6 +149,9 @@ class UsuarioEventoParada(models.Model):
         if date_today_formated > up_time_formated:
             return True
         return False
+
+    def getCoord(self):
+        return {'x':self.event.event.coorX,'y':self.event.event.coorY}
 
 
 class UsuarioEventoLimitado(models.Model):

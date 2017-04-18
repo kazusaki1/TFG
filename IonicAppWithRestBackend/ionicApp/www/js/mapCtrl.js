@@ -58,12 +58,19 @@ var infoWindowClose = false;
 
       var infoWindow = new google.maps.InfoWindow();   
 
-      infoWindow.setContent('<p>Event Name: ' + message.event_name + '</p>' +
-      '<p>Description: ' + message.event_description + '</p>' +
-      '<p>Reward: ' + message.reward + '</p>' +
-      '<button onclick="location.href=\'#/app/evento/'+message.id+'\';">Click me</button>'
-      );
 
+      if (message.event_type == "limitado"){
+        infoWindow.setContent('<p>Event Name: ' + message.event_name + '</p>' +
+        '<p>Description: ' + message.event_description + '</p>' +
+        '<p>Reward: ' + message.reward + '</p>' + 
+        '<button onclick="location.href=\'#/app/evento/'+message.id+'\';">Click me</button>'
+        );
+      }else{
+        infoWindow.setContent('<p>Event Name: ' + message.event_name + '</p>' +
+        '<p>Description: ' + message.event_description + '</p>' +
+        '<p>Reward: ' + message.reward + '</p>'
+        );
+      }
 
       google.maps.event.addListener(marker,'click', function () {
 
@@ -83,7 +90,7 @@ var infoWindowClose = false;
   $scope.eventos = [];
   $http({
     method: 'GET',
-    url: ApiEndpoint.url+ 'lista/',
+    url: ApiEndpoint.url+ 'mapa/',
   }).then(function successCallback(response) {
       $scope.eventos = [];
       for(var r in response.data) {

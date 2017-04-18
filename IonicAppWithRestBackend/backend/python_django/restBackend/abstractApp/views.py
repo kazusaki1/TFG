@@ -7,24 +7,36 @@ from .models import Imagen, Usuario, Evento, EventoParada, EventoLimitado, Usuar
 import json
 from .Lasagne.recognizeImage import main
 from datetime import datetime
+from math import sqrt
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Chewie we're home")
+    return HttpResponse()
 
-def smugglers(request):
-	hondo = {'name':'Hondo','lastname': 'Ohnaka', 'id':1}
-	han = {'name':'Han','lastname':'Solo','id':2}
-	prueba = {'name':'Esto es','lastname':'una prueba','id':3}
-	smugglers = [hondo,han,prueba]
-	data = json.dumps(smugglers)
-	print(request)
-	return HttpResponse(data)
+def perfil(request):
+	return HttpResponse()
 
-def processFile(request,texto):
-	print(request)
-	print(texto)
-	return HttpResponse(texto)
+def mapa(request):
+	eventosParada = EventoParada.objects.all()
+	eventosLimitados = EventoLimitado.objects.all()
+	prepareToSend = []
+	coord = []
+	myLocation = {'x':'41.411321','y':'2.175568'}
+	for evento in eventosParada:
+		distance = sqrt((float(evento.getCoord()['x']) - 41.411321)**2 + (float(evento.getCoord()['y']) - 2.175568)**2)
+		if distance < 0.01:
+			prepareToSend.append(evento.returnJSON())
+	for evento in eventosLimitados:
+		distance = sqrt((float(evento.getCoord()['x']) - 41.411321)**2 + (float(evento.getCoord()['y']) - 2.175568)**2)
+		if distance < 0.01:
+			prepareToSend.append(evento.returnJSON())
+	#print(coord)
+	#print(get_ordered_list(coord,41.411321,2.175568));
+	#print(sqrt((float(coord[1]['x']) - 41.411321)**2 + (float(coord[1]['y']) - 2.175568)**2))
+	
+	datos = json.dumps(prepareToSend)
+	print(datos)
+	return HttpResponse(datos)
 	
 @csrf_exempt
 def sendImage(request):
@@ -39,17 +51,7 @@ def sendImage(request):
 	print(label)
 	
 	return HttpResponse(label)
-	
-	
-def personas(request):
-	paco = {'nombre':'Paco','apellido':'Bombo','numero':1}
-	benito = {'nombre':'Benito','apellido':'Camela','numero':69}
-	amparo = {'nombre':'Amparo','apellido':'PoZi','numero':5}
-	personas = [paco, benito, amparo]
 
-	datos = json.dumps(personas)
-	print(request)
-	return HttpResponse(datos)
 
 def lista(request):
 
@@ -62,15 +64,13 @@ def lista(request):
 	for evento in eventos:
 		prepareToSend.append(evento.returnJSON())
 	
-	
 	datos = json.dumps(prepareToSend)
-
 	return HttpResponse(datos)
 	
 def evento(request,id):
 
     print(id)
-    evento = UsuarioEventoParada.objects.get(id=id)
+    evento = EventoLimitado.objects.get(event_id=id)
     prepareToSend = []
     prepareToSend.append(evento.returnJSON())
     datos = json.dumps(prepareToSend)

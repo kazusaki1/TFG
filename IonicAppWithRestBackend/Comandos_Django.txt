@@ -1,3 +1,10 @@
 python manage.py makemigrations -> registrar cambios de los modelos
 python manage.py migrate -> aplicar los cambios a la base de datos
 python manage.py runserver -> arrancar server
+
+HEROKU
+heroku git:remote -a tfgevent
+git push heroku master
+heroku ps:scale web=1
+heroku open
+heroku run python manage.py collectstatic --noinput
