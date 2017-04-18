@@ -8,13 +8,13 @@ var infoWindowClose = false;
 
     var options = {timeout: 10000, enableHighAccuracy: true};
     
-    //$cordovaGeolocation.getCurrentPosition(options).then(function(position){ // COMENTAR PARA PROBAR EN PC
+    $cordovaGeolocation.getCurrentPosition(options).then(function(position){ // COMENTAR PARA PROBAR EN PC
    
-     // var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); // COMENTAR PARA PROBAR EN PC
+      var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); // COMENTAR PARA PROBAR EN PC
      
       var mapOptions = {
-       // center: latLng, // COMENTAR PARA PROBAR EN PC
-        center: {lat: 41.411321, lng: 2.175568}, // COMENTAR PARA PROBAR EN MOVIL
+        center: latLng, // COMENTAR PARA PROBAR EN PC
+        //center: {lat: 41.411321, lng: 2.175568}, // COMENTAR PARA PROBAR EN MOVIL
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
@@ -43,9 +43,9 @@ var infoWindowClose = false;
         });
       
     // INI COMENTAR PARA PROBAR EN PC
-    /*}, function(error){
+    }, function(error){
       console.log("Could not get location");
-    });*/
+    });
     // FIN
   }
 
