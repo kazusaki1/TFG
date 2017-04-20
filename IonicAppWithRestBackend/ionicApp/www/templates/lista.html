@@ -6,8 +6,7 @@
             </div>
         </div>
     
-      <div class="item item-divider" style="background-color: transparent;">
-      </div>
+      
         <div class = "row">
           <div class = "col">Evento</div>
           <!--<div class = "col">Coordenadas</div>-->
@@ -20,14 +19,20 @@
 
           <div class = "row">
             <div class = "col">{{evento.event_name}}</div>
-            <!--<div class = "col">{{evento.coorX}},{{evento.coorY}}</div>-->
+            <!--<div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
             <div class = "col">{{evento.reward}}</div>
-            <div class = "col">{{evento.ini_date}}</div>
-            <td><a href="#/app/evento/{{evento.id}}" class="btn"><i class="glyphicon glyphicon-edit"></i>Go</a></td>
-            <!--<button ui-sref="app.evento({id: '{{evento.id}}'")>Ir</button> </div>-->
+            <div class = "col">{{evento.ini_date}}</div>-->
+          
+            <button class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Ir</button> 
+          </div>
 
         </div>
-      
-  
+  <!--<ion-item class="card-background-page">    
+    <ion-card>
+      <img src="img/marc.jpg"/>
+      <div class="card-title">São Paulo</div>
+      <div class="card-subtitle">41 Listings</div>
+    </ion-card>-->
+  </ion-item>
   </ion-content>
 </ion-view>

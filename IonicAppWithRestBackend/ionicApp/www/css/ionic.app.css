@@ -8140,7 +8140,7 @@ progress {
         color: #fff; }
   .button.button-dark {
     border-color: #111;
-    background-color: #444;
+    background-color: #555;
     color: #fff; }
     .button.button-dark:hover {
       color: #fff;
@@ -8165,6 +8165,7 @@ progress {
         background-color: #444;
         box-shadow: none;
         color: #fff; }
+
 
 .button-small {
   padding: 2px 4px 1px;

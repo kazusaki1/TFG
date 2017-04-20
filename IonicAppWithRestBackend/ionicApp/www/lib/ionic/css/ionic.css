@@ -2930,6 +2930,32 @@ a.subdued {
  * Action Sheets
  * --------------------------------------------------
  */
+ .card-background-page {
+
+  ion-card {
+    position: relative;
+    text-align: center;
+  }
+
+  .card-title {
+    position: absolute;
+    top: 36%;
+    font-size: 2.0em;
+    width: 100%;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .card-subtitle {
+    font-size: 1.0em;
+    position: absolute;
+    top: 52%;
+    width: 100%;
+    color: #fff;
+  }
+
+}
+
 .action-sheet-backdrop {
   -webkit-transition: background-color 150ms ease-in-out;
   transition: background-color 150ms ease-in-out;
@@ -6881,6 +6907,34 @@ progress {
       color: #444; }
       .button.button-dark.button-outline.active, .button.button-dark.button-outline.activated {
         background-color: #444;
+        box-shadow: none;
+        color: #fff; }
+
+  .button.button-test {
+    border-color: #638095;
+    background-color: #638095;
+    color: #fff; }
+    .button.button-test:hover {
+      color: #fff;
+      text-decoration: none; }
+    .button.button-test.active, .button.button-test.activated {
+      border-color: #000000;
+      background-color: #638095;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+    .button.button-test.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: #ef473a; }
+    .button.button-test.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-test.button-outline {
+      border-color: #ef473a;
+      background: transparent;
+      color: #ef473a; }
+      .button.button-test.button-outline.active, .button.button-test.button-outline.activated {
+        background-color: #ef473a;
         box-shadow: none;
         color: #fff; }
 
