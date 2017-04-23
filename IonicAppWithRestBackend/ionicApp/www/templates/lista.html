@@ -1,38 +1,65 @@
 <ion-view view-title="Eventos" style="background-image: url('img/fondo2.jpg');">
-  <ion-content>
-  <div class="hero2" style="background-image: url('img/fondo2.jpg');">
-            <div class="content">
-                <div class="avatar" style="background-image: url('img/marc.jpg');"></div>
-            </div>
-        </div>
+  <ion-content scroll="false">
+  
     
       
-        <div class = "row">
+        <!--<div class = "row">
           <div class = "col">Evento</div>
-          <!--<div class = "col">Coordenadas</div>-->
+          <div class = "col">Coordenadas</div>
           <div class = "col">Premio</div>
           <div class = "col">Fecha de inicio</div>
           <div class = "col">Participas?</div>
-        </div>
+        </div>-->
+        <div class="list">
 
-        <div ng-repeat="evento in lista">
+  <label class="item item-input item-select">
+    <div class="input-label">
+      Filtrar por
+    </div>
+    <select>
+      <option selected>---</option>
+      <option>Localidad</option>
+      <option>Fecha</option>
+    </select>
 
-          <div class = "row">
-            <div class = "col">{{evento.event_name}}</div>
-            <!--<div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
-            <div class = "col">{{evento.reward}}</div>
-            <div class = "col">{{evento.ini_date}}</div>-->
+  </label>
+</div>
           
-            <button class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Ir</button> 
-          </div>
+        
+          
+          <div ng-repeat="evento in lista">
 
-        </div>
+           <!-- <div class = "row">
+              <div class = "col">{{evento.event_name}}</div>
+                <div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
+                <div class = "col">{{evento.reward}}</div>-->
+              <ion-list>
+                <ion-item class="NoPadding">
+                <a class="item item-avatar" href="#">
+                  <img src="img/marc.jpg">
+                  <div style="margin-left: 40px;">{{evento.event_name}}</div>
+                  <button style="margin-top: 10px; margin-left: 200px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button>
+                </a>
+                <p>
+                Localidad
+                </p>
+                <!--<div class="row item-content">
+                  {{evento.event_name}} <button class="col text-right button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Ir</button>
+                  </div>-->
+                </ion-item>
+              </ion-list>
+               
+            <!--</div>-->
+
+          </div>
+            
+      
   <!--<ion-item class="card-background-page">    
     <ion-card>
       <img src="img/marc.jpg"/>
       <div class="card-title">São Paulo</div>
       <div class="card-subtitle">41 Listings</div>
     </ion-card>-->
-  </ion-item>
+  
   </ion-content>
 </ion-view>
