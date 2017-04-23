@@ -22,6 +22,9 @@
         "cordova-plugin-googlemaps": {
             "API_KEY_FOR_ANDROID": "AIzaSyCtbnp3P3gijS7D3TPak4Pd7CtrnzzYQlY",
             "PACKAGE_NAME": "com.ionicframework.healthnwellness444433"
+        },
+        "cordova.plugins.diagnostic": {
+            "PACKAGE_NAME": "com.ionicframework.healthnwellness444433"
         }
     },
     "dependent_plugins": {
