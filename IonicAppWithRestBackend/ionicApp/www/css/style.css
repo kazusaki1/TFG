@@ -30,5 +30,10 @@
   border: none !important;
 }
 
+.eventColor {
+  background-color:#dcfbcc;
+}
 
-
+.appBackground {
+  background-color: #ced4ae;
+}

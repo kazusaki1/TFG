@@ -1,4 +1,4 @@
-<ion-view view-title="Eventos" style="background-image: url('img/fondo2.jpg');">
+<ion-view view-title="Eventos" class="appBackground">
   <ion-content scroll="false">
   
     
@@ -33,13 +33,13 @@
               <div class = "col">{{evento.event_name}}</div>
                 <div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
                 <div class = "col">{{evento.reward}}</div>-->
-              <ion-list>
-                <ion-item class="NoPadding">
-                <a class="item item-avatar" href="#">
+              <ion-list >
+                <ion-item class="NoPadding eventColor">
+                <a class="item item-avatar eventColor">
                   <img src="img/marc.jpg">
                   <div style="margin-left: 40px;">{{evento.event_name}}</div>
-                  <button style="margin-top: 10px; margin-left: 200px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button>
-                </a>
+                  </a><button style="margin-top: 10px; margin-left: 300px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button>
+                
                 <p>
                 Localidad
                 </p>
