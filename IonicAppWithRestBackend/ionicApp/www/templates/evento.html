@@ -6,32 +6,37 @@
         </div>
     <div class="card" style="background-color: transparent;">
       <div class="item item-divider" style="background-color: transparent;">
-        Detalles
+        Detalles de {{evento[0].event_name}}
       </div>
         <div class = "row">
           <div class = "col">Marca</div>
-          <div class = "col">Nombre del Evento</div>
-          <div class = "col">Descripcion del Evento</div>
+          <div class = "col">Inicio</div>
         </div>
           <div class = "row">
             <div class = "col">{{evento[0].brand}}</div>
-            <div class = "col">{{evento[0].event_name}}</div>
-            <div class = "col">{{evento[0].event_description}}</div>
-            
-          </div>
-          <div class="row">
-            <div class = "col">Coordenadas</div>
-            <div class = "col">Recompensa</div>
-            <div class = "col">Fecha de inicio</div>
-            <div class = "col">Fecha de fin</div>
-          </div>
-          <div class="row">
-            <div class = "col">{{evento[0].latitud}},{{evento[0].longitud}}</div>
-            <div class = "col">{{evento[0].reward}}</div>
             <div class = "col">{{evento[0].ini_date}}</div>
-            <div class = "col">{{evento[0].exp_date}}</div>
+          </div>
+          <div class="row">
+            <div class = "col">Descripcion del Evento</div>
+          </div>
+          <div class="row">
+            <div class = "col">{{evento[0].event_description}}</div>
+          </div>
+
+          <div class="row">
+            <div class = "col">Recompensa</div>
+          </div>
+
+          <div class="row">
+
+            <div class = "col">{{evento[0].reward}}</div>
+
+            <div class = "col">Lugar: </div>
           </div>
     </div>
-    
+    <div style="text-align: center;">
+
+      <button class="button button-test2" ui-sref="app.foto" )><i class="icon ion-camera"></i> Participar</button>
+    </div>
   </ion-content>
 </ion-view>
