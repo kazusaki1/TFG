@@ -8,14 +8,14 @@
         </div>
         <div class="list list-inset">
           <label class="item item-input">
-              <input type="text" placeholder="Username" >
+              <input type="text" placeholder="Username" ng-model="data.username">
           </label>
           <label class="item item-input">
-              <input type="password" placeholder="Password">
+              <input type="password" placeholder="Password" ng-model="data.password">
           </label>
       </div>
         <div class="paddingLogin">
-            <button ui-sref="app.home" class="button button-full button-assertive">Login</button>
+            <button ng-click="login()" class="button button-full button-assertive">Login</button>
 
         </div>
         

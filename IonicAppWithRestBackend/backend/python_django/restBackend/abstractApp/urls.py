@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'eventoparada/$',views.eventoParada, name='eventoParada'),
 	url(r'mapa/(?P<myPosition>.*)$',views.mapa, name='mapa'),
 	url(r'^sendImage/$', views.sendImage, name='sendImage'),
+	url(r'login/',views.login, name='login'),
 ]

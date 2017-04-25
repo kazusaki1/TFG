@@ -47,16 +47,6 @@ class Imagen(models.Model):
     def __str__(self):
         return '['+str(self.id)+'] '+self.img.name
 
-class Usuario(models.Model):
-    user_name = models.OneToOneField(User, on_delete=models.CASCADE,verbose_name='Usuario')
-    email = models.EmailField(verbose_name='Email')
-
-    class Meta:
-        verbose_name_plural = "Modificar usuario"
-
-    def __str__(self):
-        return self.user_name.username
-
 
 class Recompensa(models.Model):
     reward_name = models.CharField(max_length=70,verbose_name='Recompensa')
@@ -69,12 +59,15 @@ class Recompensa(models.Model):
 
 
 class UsuarioRecompensa(models.Model):
-    user = models.ForeignKey(Usuario, on_delete=models.CASCADE,verbose_name='Usuario')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='Usuario')
     reward = models.ForeignKey(Recompensa, on_delete=models.CASCADE,verbose_name='Recompensa')
     key = models.CharField(validators=[RegexValidator(regex='^.{12}$', message='Length has to be 12', code='nomatch')],max_length=12,verbose_name="Codigo",unique=True)
 
+
+
     class Meta:
         verbose_name_plural = "Añadir recompensa"
+        verbose_name = "recompensa"
 
     def __str__(self):
         return ''
@@ -83,7 +76,8 @@ class UsuarioRecompensa(models.Model):
 class Evento(models.Model):
     brand = models.CharField(max_length=50,verbose_name='Marca')
     event_name = models.CharField(max_length=20,verbose_name='Nombre del evento')
-    event_description = models.CharField(max_length=150,verbose_name='Descripcion del evento')
+    event_description = models.CharField(max_length=50,verbose_name='Descripcion corta del evento')
+    event_fullDescription = models.CharField(max_length=250,verbose_name='Descripcion larga del evento')
     event_direccion = models.CharField(max_length=50,verbose_name='Direccion')
     event_provincia = models.CharField(max_length=50,verbose_name='Provincia')
     event_pais = models.CharField(max_length=50,verbose_name='Pais')
@@ -91,6 +85,7 @@ class Evento(models.Model):
     latitud = models.CharField(max_length=10,verbose_name='Latitud')
     longitud = models.CharField(max_length=10,verbose_name='Longitud')
     reward = models.OneToOneField(Recompensa,on_delete=models.CASCADE,unique=True,verbose_name='Recompensa')
+    image = models.ImageField(upload_to = '',verbose_name='Imagen')
     
     class Meta:
         verbose_name_plural = "Crear evento"
@@ -155,7 +150,7 @@ class EventoLimitado(models.Model):
 
 
 class UsuarioEventoParada(models.Model):    
-    user = models.ForeignKey(Usuario,on_delete=models.CASCADE,verbose_name='Usuario')
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='Usuario')
     event = models.ForeignKey(EventoParada,on_delete=models.CASCADE,verbose_name='Evento')
     last_use = models.DateTimeField(verbose_name='Ultima vez usado')
 
@@ -190,7 +185,7 @@ class UsuarioEventoParada(models.Model):
 
 
 class UsuarioEventoLimitado(models.Model):
-    user = models.ForeignKey(Usuario,on_delete=models.CASCADE,verbose_name='Usuario')
+    user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name='Usuario')
     event = models.ForeignKey(EventoLimitado,on_delete=models.CASCADE,verbose_name='Evento')
 
     class Meta:

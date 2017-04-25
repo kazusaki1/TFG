@@ -50,3 +50,27 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+// `npm install --save replace`
+var replace = require('replace');
+var replaceFiles = ['./www/js/app.js'];
+
+gulp.task('add-proxy', function() {
+  return replace({
+    regex: "http://cors.api.com/api",
+    replacement: "http://192.168.1.33:8000/",
+    paths: replaceFiles,
+    recursive: false,
+    silent: false,
+  });
+})
+
+gulp.task('remove-proxy', function() {
+  return replace({
+    regex: "http://192.168.1.33:8000/",
+    replacement: "http://cors.api.com/api",
+    paths: replaceFiles,
+    recursive: false,
+    silent: false,
+  });
+})

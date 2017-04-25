@@ -63,45 +63,9 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
     var timer = setInterval(function(){
         getEvents();
 
-    }, 5000);
+    }, 10000);
 
-function fnClone (from, to) {
-    var prop;
- 
-    // si @from es un Object
-    if (Object.prototype.toString.call(from) == "[object Object]") {
- 
-        // creamos la propiedad [objects] en la función
-        fnClone.objects = fnClone.objects || [];
- 
-        // verificamos si @from hace referencia a un objeto ya creado
-        if (fnClone.objects.filter(function(item) {
-            return item === from;
-        }).length) return from;
- 
-        // guarda la referencia de los objetos creados
-        fnClone.objects.push(from);
-    }
- 
-    // determina si @from es un valor primitivo o una función
-    if (from == null || typeof from != "object") return from;
- 
-    // determina si @from es una instancia de alguno de los siguientes prototipos
-    if (from.constructor == Date || from.constructor == RegExp || from.constructor == Function ||
-        from.constructor == String || from.constructor == Number || from.constructor == Boolean) {
-        return new from.constructor(from);
-    }
- 
-    // si el constructor del objeto no es ninguno de los anteriores
-    if (from.constructor != Object && from.constructor != Array) return from;
- 
-    // itera recursivamente las propiedades del objeto
-    to = to || new from.constructor();
-    for (prop in from) {
-        to[prop] = typeof to[prop] == "undefined" ? fnClone(from[prop], null) : to[prop];
-    }
-    return to;
-}
+
     function createMarkers(){
 
       for(var x = 0; x < markers.length; x++){

@@ -3,11 +3,13 @@ from django.views.decorators.csrf import csrf_exempt
 from base64 import b64decode
 from django.core.files.base import ContentFile
 import uuid
-from .models import Imagen, Usuario, Evento, EventoParada, EventoLimitado, UsuarioEventoParada, UsuarioEventoLimitado
+from .models import Imagen, Evento, EventoParada, EventoLimitado, UsuarioEventoParada, UsuarioEventoLimitado, Recompensa, UsuarioRecompensa
+from django.contrib.auth.models import User
 import json
 from .Lasagne.recognizeImage import main
 from datetime import datetime
 from math import sqrt
+from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
@@ -122,16 +124,44 @@ def evento(request,id):
 
 @csrf_exempt
 def eventoParada(request):
+
 	evento = EventoParada.objects.get(event_id=request.body)
-	evento = UsuarioEventoParada.objects.get(event_id=evento.id,user_id=1) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+	eventoParada = UsuarioEventoParada.objects.get(event_id=evento.id,user_id=1) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+
+	reward = Evento.objects.get(id=request.body)
+	key = generarKey()
+	UsuarioRecompensa(key=key,reward_id=reward.reward_id,user_id=1).save()# MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+
 	date_today_formated = str(datetime.today()).split(".")[0]
-	evento.last_use=date_today_formated
-	evento.save()
-	evento = UsuarioEventoParada.objects.get(event_id=evento.id,user_id=1) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+	eventoParada.last_use=date_today_formated
+	eventoParada.save()
 	prepareToSend = []
-	prepareToSend.append(evento.returnJSON())
+	prepareToSend.append(eventoParada.returnJSON())
 	datos = json.dumps(prepareToSend)
     
+	return HttpResponse(datos)
+
+def generarKey():
+
+	try:
+		key = UsuarioRecompensa.objects.latest('key').key
+		key = str(int(key)+1).zfill(12)
+	except UsuarioRecompensa.DoesNotExist:
+		key = "000000000000"
+
+	
+	return key
+
+@csrf_exempt
+def login(request):
+	datos = "false"
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	print(infoUser)
+	if not infoUser:
+		return HttpResponse(datos)
+	user = authenticate(username=infoUser['username'], password=infoUser['password'])
+	if(user):
+		datos = "true"
 	return HttpResponse(datos)
 
 	
