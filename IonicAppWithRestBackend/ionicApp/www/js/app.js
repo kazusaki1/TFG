@@ -31,8 +31,16 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova'])
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'
         }
-    }
-      
+    }   
+  })
+  .state('app.register', {
+      url: '/register',
+      views: {
+        'menuContent': {
+            templateUrl: 'templates/register.html',
+            controller: 'RegisterCtrl'
+        }
+    }   
   })
   .state('app.home',{
     url: '/home',

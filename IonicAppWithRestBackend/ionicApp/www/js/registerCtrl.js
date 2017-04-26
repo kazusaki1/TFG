@@ -1,16 +1,16 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('LoginCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$state){
+module.controller('RegisterCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$state){
 	
-
 	$scope.data = {};
-	$scope.login = function() {
+	$scope.register = function() {
 
-		var data = {username : $scope.data.username, password : $scope.data.password};
+		var data = { confirmPassword : $scope.data.confirmPassword, username : $scope.data.username, email : $scope.data.email, password : $scope.data.password};
 		var success = false;
+		
 		$http({
 			method:'POST',
-			url: ApiEndpoint.url+'login/', 
+			url: ApiEndpoint.url+'register/', 
 			data: data,
 			headers: {
 		      'Content-Type': 'application/json; charset=UTF-8',
@@ -20,11 +20,11 @@ module.controller('LoginCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$sta
 			success = response.data
 
 			if(success == "true")
-	            $state.go('app.home');
+	            $state.go('app.login');
 	        else{
 				var alertPopup = $ionicPopup.alert({
-			      title: '<u>Login error</u>',
-			      template: 'The user name or password is incorrect.'
+			      title: '<u>Register error</u>',
+			      template: 'Try again.'
 			    })
 	        }
 

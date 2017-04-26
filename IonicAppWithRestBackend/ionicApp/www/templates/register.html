@@ -11,20 +11,19 @@
               <input type="text" placeholder="Username" ng-model="data.username">
           </label>
           <label class="item item-input">
+              <input type="email" placeholder="Email" ng-model="data.email">
+          </label>
+          <label class="item item-input">
               <input type="password" placeholder="Password" ng-model="data.password">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Confirm password" ng-model="data.confirmPassword">
           </label>
       </div>
         <div class="paddingLogin">
-            <button ng-click="login()" class="button button-full button-assertive">Login</button>
+            <button ng-click="register()" class="button button-full button-assertive">Create Account</button>
 
         </div>
-        <div class="paddingLogin">
-            <button ui-sref="app.register" class="button button-full button-positive">Registrarse</button>
-
-        </div>
-        
-        <div class="bar-footer button-bar social-login">
-            <button class="button button-small button-border icon-left ion-social-facebook button-positive-900">Facebook</button>
-        </div>
+      
   </ion-content>
 </ion-view>

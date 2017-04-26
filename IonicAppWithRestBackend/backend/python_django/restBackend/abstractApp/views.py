@@ -148,7 +148,6 @@ def generarKey():
 		key = str(int(key)+1).zfill(12)
 	except UsuarioRecompensa.DoesNotExist:
 		key = "000000000000"
-
 	
 	return key
 
@@ -156,12 +155,27 @@ def generarKey():
 def login(request):
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
-	print(infoUser)
 	if not infoUser:
 		return HttpResponse(datos)
 	user = authenticate(username=infoUser['username'], password=infoUser['password'])
 	if(user):
 		datos = "true"
+
+	return HttpResponse(datos)
+
+@csrf_exempt
+def register(request):
+	datos = "false"
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	if not infoUser or 'username' not in infoUser or 'password' not in infoUser or 'confirmPassword' not in infoUser or 'email' not in infoUser or infoUser['password'] != infoUser['confirmPassword']:
+		return HttpResponse(datos)
+	
+	try:
+		User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
+		datos = "true"
+	except:
+		datos = "false"
+
 	return HttpResponse(datos)
 
 	
