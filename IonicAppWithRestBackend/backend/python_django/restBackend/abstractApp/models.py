@@ -39,6 +39,10 @@ def mayorZero(valor):
                 'valor': valor},
         )
 
+class Usuario(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=40)
+
 class Imagen(models.Model):
     img = models.ImageField(upload_to = '',verbose_name='Imagen')
 
@@ -159,7 +163,7 @@ class UsuarioEventoParada(models.Model):
         verbose_name_plural = "Inscribir usuario a evento parada"
 
     def __str__(self):
-        return self.user.user_name.username+ ' - ['+str(self.event.event.id)+'] '+self.event.event.brand+': '+self.event.event.event_name
+        return self.user.username+ ' - ['+str(self.event.event.id)+'] '+self.event.event.brand+': '+self.event.event.event_name
 
     def returnJSON(self):
         last_use_formated = str(self.last_use).split("+")[0]
@@ -193,4 +197,4 @@ class UsuarioEventoLimitado(models.Model):
         verbose_name_plural = "Inscribir usuario a evento limitado"
 
     def __str__(self):
-        return self.user.user_name.username+ ' - ['+str(self.event.event.id)+'] '+self.event.event.brand+': '+self.event.event.event_name
+        return self.user.username+ ' - ['+str(self.event.event.id)+'] '+self.event.event.brand+': '+self.event.event.event_name

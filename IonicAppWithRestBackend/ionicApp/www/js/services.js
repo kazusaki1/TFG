@@ -1,5 +1,61 @@
 angular.module('myIonicApp')
 
+.factory('$localstorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    },
+    clear: function () {
+      $window.localStorage.clear();
+    }
+  }
+}])
+
+.factory('Token', function($q,$http,ApiEndpoint,$localstorage,$ionicPopup,$state) {
+
+
+      var data = {username : $localstorage.get('name'), token : $localstorage.get('token')};
+      var success = "False";
+      var promise = $http({
+        method:'POST',
+        url: ApiEndpoint.url+'checkLogin/', 
+        data: data,
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+          }
+
+      }).then(function successCallback(response) {
+        success = response.data;
+        console.log(success)
+        if(success == "true"){
+          console.log("Token success: ",success)
+        }else{
+          var alertPopup = $ionicPopup.alert({
+            title: '<u>Su sesión ha caducado</u>',
+            template: 'Necesita volver a logear para usar la aplicación.'
+          })
+          $state.go('app.login');
+        }
+        
+
+      }, function errorCallback(response) {
+        console.log("TOKEN ERROR");
+      }) 
+
+    return {isToken : function() { return $q.all(promise).then(function(){
+      return success
+    })}}
+
+})
 
 .factory('FileService', function($http,ApiEndpoint) {
   var images;
