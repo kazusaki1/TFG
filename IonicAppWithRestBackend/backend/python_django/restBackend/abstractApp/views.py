@@ -3,13 +3,15 @@ from django.views.decorators.csrf import csrf_exempt
 from base64 import b64decode
 from django.core.files.base import ContentFile
 import uuid
-from .models import Imagen, Evento, EventoParada, EventoLimitado, UsuarioEventoParada, UsuarioEventoLimitado, Recompensa, UsuarioRecompensa
+from .models import Imagen, Evento, EventoParada, EventoLimitado, UsuarioEventoParada, UsuarioEventoLimitado, Recompensa, UsuarioRecompensa, Usuario
 from django.contrib.auth.models import User
 import json
 from .Lasagne.recognizeImage import main
 from datetime import datetime
 from math import sqrt
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from uuid import uuid4
 
 # Create your views here.
 def index(request):
@@ -18,7 +20,7 @@ def index(request):
 def perfil(request):
 	return HttpResponse()
 
-def mapa(request, myPosition):
+def mapa(request, info):
 
 	prepareToSend = []
 	position = []
@@ -27,17 +29,21 @@ def mapa(request, myPosition):
 	eventosParada = EventoParada.objects.all()
 	eventosLimitados = EventoLimitado.objects.all()
 
-	# My current position
-	latitud = float(myPosition.split("+")[0])
-	longitud = float(myPosition.split("+")[1])
+	# User
+	user = info[info.find('usr=')+4:info.find('&lat=')]
+	user = User.objects.get(username=user)
+	user_id = user.id
 
+	# My current position
+	latitud = float(info[info.find('&lat=')+5:info.find('&lng=')])
+	longitud = float(info[info.find('&lng=')+5:])
 
 	# Stop events
 	for evento in eventosParada:
 		distance = sqrt((float(evento.getPosition()['latitud']) - latitud)**2 + (float(evento.getPosition()['longitud']) - longitud)**2)
 		# Save nearby events
 		if distance < 0.01: # ~1km	
-			isVisited = UsuarioEventoParada.objects.filter(user_id=1,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+			isVisited = UsuarioEventoParada.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
 			if isVisited:
 				if not isVisited[0].isAvaible():
 					prepareToSend.append(isVisited[0].returnMap())
@@ -52,7 +58,7 @@ def mapa(request, myPosition):
 		distance = sqrt((float(evento.getPosition()['latitud']) - latitud)**2 + (float(evento.getPosition()['longitud']) - longitud)**2)
 		# Save nearby events
 		if distance < 0.01: # ~1km
-			isVisited = UsuarioEventoLimitado.objects.filter(user_id=1,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+			isVisited = UsuarioEventoLimitado.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
 			if not isVisited:			
 				prepareToSend.append(evento.returnMap())
 
@@ -148,20 +154,74 @@ def generarKey():
 		key = str(int(key)+1).zfill(12)
 	except UsuarioRecompensa.DoesNotExist:
 		key = "000000000000"
-
 	
 	return key
 
 @csrf_exempt
 def login(request):
-	datos = "false"
+	prepareToSend = []
 	infoUser = json.loads(str(request.body,"UTF-8"))
-	print(infoUser)
 	if not infoUser:
+		prepareToSend.append({'access':'false'})
+		datos = json.dumps(prepareToSend)
 		return HttpResponse(datos)
 	user = authenticate(username=infoUser['username'], password=infoUser['password'])
 	if(user):
+		token = uuid4()
+		try:
+			userToken = Usuario.objects.get(user_id=user.id)
+			userToken.token = str(token)
+			userToken.save()
+		except Usuario.DoesNotExist:
+			Usuario(user_id=user.id,token=str(token)).save()
+
+		prepareToSend.append({'access':'true','token':str(token)})
+
+	else:
+		prepareToSend.append({'access':'false'})
+	datos = json.dumps(prepareToSend)
+
+	return HttpResponse(datos)
+
+@csrf_exempt
+def checkLogin(request):
+	
+	datos = "false"
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	if not infoUser or 'username' not in infoUser or 'token' not in infoUser:
+		return HttpResponse(datos)
+	datos = isTokenCorrect(infoUser['username'],infoUser['token'])
+
+	return HttpResponse(datos)
+
+
+def isTokenCorrect(user,token):
+	try:
+		user = User.objects.get(username=user)
+		userToken = Usuario.objects.get(user_id=user.id)
+		if(userToken.token == token):
+			return "true"
+		else:
+			return "false"
+	except User.DoesNotExist:
+		return "false"
+	except Usuario.DoesNotExist:
+		return "false"
+
+
+@csrf_exempt
+def register(request):
+	datos = "false"
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	if not infoUser or 'username' not in infoUser or 'password' not in infoUser or 'confirmPassword' not in infoUser or 'email' not in infoUser or infoUser['password'] != infoUser['confirmPassword']:
+		return HttpResponse(datos)
+	
+	try:
+		User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
 		datos = "true"
+	except:
+		datos = "false"
+
 	return HttpResponse(datos)
 
 	

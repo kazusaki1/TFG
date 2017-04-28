@@ -1,9 +1,11 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation){
+module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation,$localstorage,Token){
 
+  var timer, timer2
    // Code you want executed every time view is opened
   $scope.$on('$ionicView.enter', function() {
+    Token.isToken()
 
     var infoWindowClose = false;
     var latLng = null;
@@ -51,7 +53,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
     }
 
 
-    var timer = setInterval(function(){
+    timer = setInterval(function(){
           $cordovaGeolocation.getCurrentPosition(options).then(function(position){ 
          
         latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
@@ -62,7 +64,8 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
 
     }, 1000);
 
-    var timer = setInterval(function(){
+
+    timer2 = setInterval(function(){
         getEvents();
 
     }, 10000);
@@ -180,7 +183,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
 
       $http({
         method: 'GET',
-        url: ApiEndpoint.url+ 'mapa/'+latLng.lat+'+'+latLng.lng,
+        url: ApiEndpoint.url+ 'mapa/usr='+$localstorage.get('name')+'&lat='+latLng.lat+'&lng='+latLng.lng,
       }).then(function successCallback(response) {
           $scope.eventos = [];
           for(var r in response.data) {
@@ -203,7 +206,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
 
       $http({
         method: 'GET',
-        url: ApiEndpoint.url+ 'mapa/'+latLng.lat+'+'+latLng.lng,
+        url: ApiEndpoint.url+ 'mapa/usr='+$localstorage.get('name')+'&lat='+latLng.lat+'&lng='+latLng.lng,
       }).then(function successCallback(response) {
           $scope.eventos = [];
           for(var r in response.data) {
@@ -242,13 +245,19 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
     function addStop(id){
       $http({
         method: 'POST',
-        url: ApiEndpoint.url+ 'eventoparada/',
+        url: ApiEndpoint.url+ 'eventoParada/',
         data: id,
       }); 
 
     }
 
 
-  })    
+  })
+
+  // Code you want executed every time view is closed
+  $scope.$on('$ionicView.beforeLeave', function(){
+      clearInterval(timer);
+      clearInterval(timer2);
+   });
   
 })

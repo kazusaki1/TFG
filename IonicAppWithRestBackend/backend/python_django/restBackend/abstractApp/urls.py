@@ -8,8 +8,10 @@ urlpatterns = [
     url(r'lista/', views.lista, name='lista'),
     url(r'^lista/(?P<type>.*)$', views.listaFiltrada, name='listaFiltrada'),
     url(r'evento/(?P<id>.*)/',views.evento, name='evento'),
-    url(r'eventoparada/$',views.eventoParada, name='eventoParada'),
-	url(r'mapa/(?P<myPosition>.*)$',views.mapa, name='mapa'),
+    url(r'eventoParada/',views.eventoParada, name='eventoParada'),
+	url(r'mapa/(?P<info>.*)$',views.mapa, name='mapa'),
 	url(r'^sendImage/$', views.sendImage, name='sendImage'),
 	url(r'login/',views.login, name='login'),
+	url(r'register/',views.register, name='register'),
+	url(r'checkLogin/',views.checkLogin, name='checkLogin'),
 ]

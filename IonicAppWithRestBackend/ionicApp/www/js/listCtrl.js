@@ -1,6 +1,11 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('ListCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation){
+module.controller('ListCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation, Token){
+
+$scope.$on('$ionicView.enter', function() {
+  Token.isToken()
+  
+})
 
 $scope.lista = [];
   $http({

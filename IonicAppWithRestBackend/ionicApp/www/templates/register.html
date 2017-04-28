@@ -1,0 +1,29 @@
+<ion-view hide-nav-bar="true" view-title="login" name="login-view">
+  <ion-content style="background: url(img/fondo2.jpg) center; background-size: cover;">
+      <div class="hero no-header flat">
+            <div class="content">
+            <!--<div class="app-icon"></div>-->
+                <h1></h1>
+            </div>
+        </div>
+        <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="Username" ng-model="data.username">
+          </label>
+          <label class="item item-input">
+              <input type="email" placeholder="Email" ng-model="data.email">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="data.password">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Confirm password" ng-model="data.confirmPassword">
+          </label>
+      </div>
+        <div class="paddingLogin">
+            <button ng-click="register()" class="button button-full button-assertive">Create Account</button>
+
+        </div>
+      
+  </ion-content>
+</ion-view>

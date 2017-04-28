@@ -8,6 +8,9 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
+
+      $httpProvider.defaults.useXDomain=true;
+      delete $httpProvider.defaults.headers.common['X-Requested-With'];
     }
     if (window.StatusBar) {
       StatusBar.styleDefault();
@@ -31,8 +34,16 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'
         }
-    }
-      
+    }   
+  })
+  .state('app.register', {
+      url: '/register',
+      views: {
+        'menuContent': {
+            templateUrl: 'templates/register.html',
+            controller: 'RegisterCtrl'
+        }
+    }   
   })
   .state('app.home',{
     url: '/home',
@@ -73,7 +84,10 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
   })
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/login');
+  $urlRouterProvider.otherwise( function($injector, $location) {
+            var $state = $injector.get("$state");
+            $state.go("app.login");
+        });
 });
 
 

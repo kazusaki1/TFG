@@ -1,6 +1,11 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('EventCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation,$stateParams){
+module.controller('EventCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation,$stateParams, Token){
+
+  $scope.$on('$ionicView.enter', function() {
+    Token.isToken()
+    
+  })
 
   $scope.header = "Informacion evento";
   $scope.evento = [];
