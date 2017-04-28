@@ -7,6 +7,7 @@
     "livereload-js": "^2.2.1"
   },
   "dependencies": {
-    "ngCordova": "^0.1.27-alpha"
+    "ngCordova": "^0.1.27-alpha",
+    "animate.css": "^3.5.2"
   }
 }
