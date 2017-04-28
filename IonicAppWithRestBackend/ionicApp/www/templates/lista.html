@@ -1,4 +1,4 @@
-<ion-view view-title="Eventos" class="appBackground">
+<ion-view class="appBackground">
   <ion-content scroll="false">
   
     
@@ -21,8 +21,6 @@
       <option>Localidad</option>
       <option>Fecha</option>
     </select>
-
-
   </label>
 </div>
 
@@ -31,11 +29,7 @@
           
           <div ng-repeat="evento in lista">
 
-           <!-- <div class = "row">
-              <div class = "col">{{evento.event_name}}</div>
-                <div class = "col">{{evento.coorX}},{{evento.coorY}}</div>
-                <div class = "col">{{evento.reward}}</div>-->
-              <ion-list >
+              <!--<ion-list >
                 <ion-item class="NoPadding eventColor">
                 <a class="item item-avatar eventColor">
                   <img src="img/marc.jpg">
@@ -45,23 +39,30 @@
                 <p>
                 Localidad
                 </p>
-                <!--<div class="row item-content">
-                  {{evento.event_name}} <button class="col text-right button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Ir</button>
-                  </div>-->
+        
                 </ion-item>
-              </ion-list>
+              </ion-list>-->
+
+              
+                <div class="list card sombres eventColor animated bounceInRight">  
+                  <div class="item item-divider" style="text-align: center;">{{evento.event_name}}</div>
+                  <div class="item item-body">
+                    <div>
+                      {{evento.event_description}} 
+                    </div>
+                    <div class="row">
+                      <div class="col" style="margin-top: 40px;">{{evento.ini_date}}</div>
+                      <div class="col"><button style="margin-top: 10px; margin-left: 100px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button></div>
+                    </div>
+                  </div>
                
-            <!--</div>-->
+              </dic>
+
+               
 
           </div>
             
       
-  <!--<ion-item class="card-background-page">    
-    <ion-card>
-      <img src="img/marc.jpg"/>
-      <div class="card-title">São Paulo</div>
-      <div class="card-subtitle">41 Listings</div>
-    </ion-card>-->
   
   </ion-content>
 </ion-view>

@@ -1,25 +1,34 @@
-<ion-view hide-nav-bar="true" view-title="login" name="login-view">
-  <ion-content style="background: url(img/fondo2.jpg) center; background-size: cover;">
+<ion-view hide-nav-bar="true" class="appBackground">
+  <ion-content >
       <div class="hero no-header flat">
             <div class="content">
             <!--<div class="app-icon"></div>-->
                 <h1></h1>
             </div>
         </div>
-        <div class="list list-inset">
+        <!--<div class="list list-inset">
           <label class="item item-input">
               <input type="text" placeholder="Username" ng-model="data.username">
           </label>
           <label class="item item-input">
               <input type="password" placeholder="Password" ng-model="data.password">
           </label>
-      </div>
+      </div>-->
+      <div class="list">
+            <ion-md-input placeholder="Username" highlight-color="balanced" type="text" ng-model="data.username"></ion-md-input>
+            <ion-md-input placeholder="Password" highlight-color="energized" type="password" ng-model="data.password"></ion-md-input>
+        </div>
         <div class="paddingLogin">
             <button ng-click="login()" class="button button-full button-assertive">Login</button>
 
         </div>
         
-        <div class="bar-footer button-bar social-login">
+        <!--<div class="bar-footer button-bar social-login">
+            <button class="button button-small button-border icon-left ion-social-facebook button-positive-900">Facebook</button>
+        </div>-->
+        <div class="button-bar social-login">
+            <button class="button button-small button-border icon-left ion-social-google button-assertive-900">Google+</button>
+            <button class="button button-small button-border icon-left ion-social-twitter button-calm-900">Twitter</button>
             <button class="button button-small button-border icon-left ion-social-facebook button-positive-900">Facebook</button>
         </div>
   </ion-content>

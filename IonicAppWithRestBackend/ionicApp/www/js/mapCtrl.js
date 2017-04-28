@@ -8,12 +8,14 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
     var infoWindowClose = false;
     var latLng = null;
     var options = {timeout: 10000, enableHighAccuracy: true};
+    var myImage = '/img/userMaps.png';
     map = new google.maps.Map(document.getElementById("map"));
 
     // My marker
     var myMarker = new google.maps.Marker({
           map: map,
-          icon: ApiEndpoint.url+"media/34250_GjGILec.png"
+          //icon: ApiEndpoint.url+"media/34250_GjGILec.png"
+          icon: myImage
     }); 
 
     var markers = [];
@@ -67,7 +69,9 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
 
 
     function createMarkers(){
-
+      //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+      var eventoImg = '/img/eventoMaps.png';
+      var paradaImg = '/img/paradaMaps.png';
       for(var x = 0; x < markers.length; x++){
         if(markers[x] != null)
           markers[x].usado = false;
@@ -92,11 +96,22 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
           if (markers[cont] == null){
             existe = true;
             var markerPos = new google.maps.LatLng(evento.latitud, evento.longitud);
-            markers[cont] = new google.maps.Marker({
+            if (evento.event_type == "limitado"){
+              markers[cont] = new google.maps.Marker({
                 map: map,
                 animation: google.maps.Animation.DROP,
-                position: markerPos
-            });
+                position: markerPos,
+                icon: eventoImg
+              });
+            }else{
+              markers[cont] = new google.maps.Marker({
+                map: map,
+                animation: google.maps.Animation.DROP,
+                position: markerPos,
+                icon: paradaImg
+              });
+            }
+            
             markers[cont].usado = true;
             fillInfoWindow(evento, cont);
             initMarkerListeners(evento, cont);
