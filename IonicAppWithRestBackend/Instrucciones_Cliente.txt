@@ -3,5 +3,7 @@
 	cd C:\Users\Marc\Desktop\TFG\IonicAppWithRestBackend\ionicApp
 3) Ejecutar el cliente mediante el comando: 
 	ionic serve
+   Ejecutar el cliente mediante emulador:
+    ionic run android -l
 4) Para crear la apk:
 	ionic build android (o cambiar android por ios)

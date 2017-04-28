@@ -57,7 +57,7 @@ angular.module('myIonicApp')
 
 })
 
-.factory('FileService', function($http,ApiEndpoint) {
+.factory('FileService', function($http,ApiEndpoint,$ionicPopup) {
   var images;
   var IMAGE_STORAGE_KEY = 'images';
  
@@ -97,14 +97,34 @@ angular.module('myIonicApp')
   function addImage(img, path) {
     images.push(img);
     window.localStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(images));
-	getFileContentAsBase64(path+img,function(base64Image){
-		console.log(base64Image); 
-		$http.post(ApiEndpoint.url+'sendImage/',JSON.stringify(base64Image)).then(function(resp) {
-			console.log('Success', JSON.stringify(resp));
-		}, function(err) {
-			console.log('Success', JSON.stringify(err));
-		})
-	});
+	  getFileContentAsBase64(path+img,function(base64Image){
+  		console.log(base64Image); 
+
+      $http({
+        method:'POST',
+        url: ApiEndpoint.url+'sendImage/', 
+        data: JSON.stringify(base64Image),
+
+      }).then(function successCallback(response) {
+        result = response.data
+        console.log(result)
+        if(result == "random"){
+          var alertPopup = $ionicPopup.alert({
+            title: '<u>Felicidades</u>',
+            template: 'Has logrado la recompensa.'
+          })
+        } else {
+          var alertPopup = $ionicPopup.alert({
+            title: '<u>Lo siento</u>',
+            template: 'Esa imagen no es la que buscábamos. Inténtelo de nuevo.'
+          })
+        }
+
+      }, function errorCallback(response) {
+        console.log("PHOTO ERROR");
+      }) 
+
+	  });
   };
  
   return {
