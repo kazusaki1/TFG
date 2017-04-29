@@ -5,6 +5,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
   var timer, timer2
    // Code you want executed every time view is opened
   $scope.$on('$ionicView.enter', function() {
+    
     Token.isToken()
 
     var infoWindowClose = false;

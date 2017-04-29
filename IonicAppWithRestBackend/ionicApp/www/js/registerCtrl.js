@@ -1,7 +1,9 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('RegisterCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$state){
+module.controller('RegisterCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$state,$ionicSideMenuDelegate){
 	
+	$ionicSideMenuDelegate.canDragContent(false)
+
 	$scope.data = {};
 	$scope.register = function() {
 

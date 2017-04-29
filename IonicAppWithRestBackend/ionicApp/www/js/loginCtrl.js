@@ -1,7 +1,8 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('LoginCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$state,$localstorage){
+module.controller('LoginCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$state,$localstorage,$ionicSideMenuDelegate){
 	
+	$ionicSideMenuDelegate.canDragContent(false)
 
 	$scope.data = {};
 	$scope.login = function() {

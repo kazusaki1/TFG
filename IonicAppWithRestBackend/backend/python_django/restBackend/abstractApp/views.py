@@ -31,40 +31,41 @@ def mapa(request, info):
 
 	# User
 	user = info[info.find('usr=')+4:info.find('&lat=')]
-	user = User.objects.get(username=user)
-	user_id = user.id
+	if user != "undefined":
+		user = User.objects.get(username=user)
+		user_id = user.id
 
-	# My current position
-	latitud = float(info[info.find('&lat=')+5:info.find('&lng=')])
-	longitud = float(info[info.find('&lng=')+5:])
+		# My current position
+		latitud = float(info[info.find('&lat=')+5:info.find('&lng=')])
+		longitud = float(info[info.find('&lng=')+5:])
 
-	# Stop events
-	for evento in eventosParada:
-		distance = sqrt((float(evento.getPosition()['latitud']) - latitud)**2 + (float(evento.getPosition()['longitud']) - longitud)**2)
-		# Save nearby events
-		if distance < 0.01: # ~1km	
-			isVisited = UsuarioEventoParada.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
-			if isVisited:
-				if not isVisited[0].isAvaible():
-					prepareToSend.append(isVisited[0].returnMap())
+		# Stop events
+		for evento in eventosParada:
+			distance = sqrt((float(evento.getPosition()['latitud']) - latitud)**2 + (float(evento.getPosition()['longitud']) - longitud)**2)
+			# Save nearby events
+			if distance < 0.01: # ~1km	
+				isVisited = UsuarioEventoParada.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+				if isVisited:
+					if not isVisited[0].isAvaible():
+						prepareToSend.append(isVisited[0].returnMap())
+					else:
+						prepareToSend.append(evento.returnMap())
 				else:
 					prepareToSend.append(evento.returnMap())
-			else:
-				prepareToSend.append(evento.returnMap())
 
 
-	# Limited events
-	for evento in eventosLimitados:
-		distance = sqrt((float(evento.getPosition()['latitud']) - latitud)**2 + (float(evento.getPosition()['longitud']) - longitud)**2)
-		# Save nearby events
-		if distance < 0.01: # ~1km
-			isVisited = UsuarioEventoLimitado.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
-			if not isVisited:			
-				prepareToSend.append(evento.returnMap())
+		# Limited events
+		for evento in eventosLimitados:
+			distance = sqrt((float(evento.getPosition()['latitud']) - latitud)**2 + (float(evento.getPosition()['longitud']) - longitud)**2)
+			# Save nearby events
+			if distance < 0.01: # ~1km
+				isVisited = UsuarioEventoLimitado.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+				if not isVisited:			
+					prepareToSend.append(evento.returnMap())
 
-	#print(position)
-	#print(get_ordered_list(position,41.411321,2.175568));
-	#print(sqrt((float(position[1]['x']) - 41.411321)**2 + (float(position[1]['y']) - 2.175568)**2))
+		#print(position)
+		#print(get_ordered_list(position,41.411321,2.175568));
+		#print(sqrt((float(position[1]['x']) - 41.411321)**2 + (float(position[1]['y']) - 2.175568)**2))
 	
 	datos = json.dumps(prepareToSend)
 	return HttpResponse(datos)
@@ -185,7 +186,7 @@ def login(request):
 
 @csrf_exempt
 def checkLogin(request):
-	
+
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
 	if not infoUser or 'username' not in infoUser or 'token' not in infoUser:
