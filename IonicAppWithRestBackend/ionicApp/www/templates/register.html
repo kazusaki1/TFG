@@ -6,20 +6,12 @@
                 <h1></h1>
             </div>
         </div>
-        <div class="list list-inset">
-          <label class="item item-input">
-              <input type="text" placeholder="Username" ng-model="data.username">
-          </label>
-          <label class="item item-input">
-              <input type="email" placeholder="Email" ng-model="data.email">
-          </label>
-          <label class="item item-input">
-              <input type="password" placeholder="Password" ng-model="data.password">
-          </label>
-          <label class="item item-input">
-              <input type="password" placeholder="Confirm password" ng-model="data.confirmPassword">
-          </label>
-      </div>
+        <div class="list">
+            <ion-md-input placeholder="Username" highlight-color="balanced" type="text" ng-model="data.username"></ion-md-input>
+            <ion-md-input placeholder="Email" highlight-color="balanced" type="text" ng-model="data.email"></ion-md-input>
+            <ion-md-input placeholder="Password" highlight-color="energized" type="password" ng-model="data.password"></ion-md-input>
+            <ion-md-input placeholder="Confirm Password" highlight-color="energized" type="password" ng-model="data.confirmPassword"></ion-md-input>
+        </div>
         <div class="paddingLogin">
             <button ng-click="register()" class="button button-full button-assertive">Create Account</button>
 

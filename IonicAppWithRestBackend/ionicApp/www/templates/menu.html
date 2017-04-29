@@ -21,7 +21,7 @@
         <ion-item menu-close="" href="#/app/home" >
           Inicio
         </ion-item>
-        <ion-item nav-clear="" menu-close="" class="item" href="#/app/home">
+        <ion-item nav-clear="" menu-close="" class="item" href="#/app/perfil">
           Perfil
         </ion-item>
         <ion-item nav-clear="" menu-close="" class="item" href="#/app/home">
@@ -30,11 +30,10 @@
         <ion-item nav-clear="" menu-close="" class="item" href="#/app/home">
           Configuracion
         </ion-item>
-      </div>
-
-        <button ion-item menu-toggle ng-controller="LogoutCtrl" ng-click="logout()">
+        <ion-item nav-clear="" menu-close="" ng-controller="LogoutCtrl" ng-click="logout()" class="item" href="#/app/login">
           Cerrar sesión
-        </button>
+        </ion-item>
+      </div>
 
       </ion-list>
     </ion-content>
