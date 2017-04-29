@@ -42,6 +42,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+
 .ion-alert:before {
   content: "\f101"; }
 
@@ -2272,7 +2273,6 @@
   -webkit-box-shadow: none; }
 
 .social-login {
-    position: fixed;
     bottom: 0;
 }
 
@@ -5357,8 +5357,11 @@ a.item-content {
   position: relative;
   padding-top: 1px;
   padding-bottom: 1px;
-  padding-left: 0;
-  margin-bottom: 20px; }
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-bottom: 1%; 
+}
+
 
 .list:last-child {
   margin-bottom: 0px; }
@@ -7500,7 +7503,10 @@ a.button {
   padding: 10px; }
 
 .paddingLogin {
-  padding: 30px; }
+  padding-top: 5%;
+  padding-bottom: 5%;
+  padding-left: 30%;
+  padding-right: 30%;}
 
 .padding-top, .padding-vertical {
   padding-top: 10px; }

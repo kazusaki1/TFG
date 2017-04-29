@@ -251,7 +251,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
       }); 
 
     }
-
+    
 
   })
 
@@ -259,6 +259,6 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
   $scope.$on('$ionicView.beforeLeave', function(){
       clearInterval(timer);
       clearInterval(timer2);
-   });
+  });
   
 })
