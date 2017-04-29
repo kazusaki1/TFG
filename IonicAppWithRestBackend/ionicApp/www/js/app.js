@@ -82,6 +82,15 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
         }
     }
   })
+  .state('app.perfil',{
+    url: '/perfil',
+    views: {
+        'menuContent': {
+            templateUrl: 'templates/evento.html',
+            controller: 'PerfilCtrl'
+        }
+    }
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise( function($injector, $location) {
