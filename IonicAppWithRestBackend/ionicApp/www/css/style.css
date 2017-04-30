@@ -28,11 +28,15 @@
 
 
 .eventColor {
-  background-color:#a9c2e2;
+  background-color:#e65100;
 }
 
+.eventTitle {
+  padding-top: 10px;
+  text-align: center;
+}
 .appBackground {
-  background-color: #ced4ae;
+  background-color: #365d89;
 }
 
 .box {
