@@ -86,7 +86,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
     url: '/perfil',
     views: {
         'menuContent': {
-            templateUrl: 'templates/evento.html',
+            templateUrl: 'templates/perfil.html',
             controller: 'PerfilCtrl'
         }
     }
