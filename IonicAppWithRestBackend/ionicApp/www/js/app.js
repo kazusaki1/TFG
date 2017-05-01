@@ -91,6 +91,15 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
         }
     }
   })
+  .state('app.recompensa',{
+    url: '/recompensa',
+    views: {
+        'menuContent': {
+            templateUrl: 'templates/recompensa.html',
+            controller: 'RecompensaCtrl'
+        }
+    }
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise( function($injector, $location) {
