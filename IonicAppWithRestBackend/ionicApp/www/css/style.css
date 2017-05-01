@@ -32,11 +32,16 @@
 }
 
 .eventTitle {
-  padding-top: 10px;
+  padding-top: 15px;
   text-align: center;
   font-size: 150%;
   text-decoration: underline;
 }
+
+.subrayado {
+  text-decoration: underline;
+}
+
 .appBackground {
   background-color: #365d89;
 }
