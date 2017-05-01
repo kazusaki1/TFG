@@ -7,11 +7,19 @@ from .models import Imagen, Evento, EventoParada, EventoLimitado, UsuarioEventoP
 from django.contrib.auth.models import User
 import json
 from .Lasagne.recognizeImage import main
+from .Lasagne.loadModel import loadModel
 from datetime import datetime
 from math import sqrt
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from uuid import uuid4
+
+import PIL
+from PIL import Image
+from scipy import misc
+import os
+
+test_net = loadModel()
 
 # Create your views here.
 def index(request):
@@ -62,36 +70,42 @@ def mapa(request, info):
 				isVisited = UsuarioEventoLimitado.objects.filter(user_id=user_id,event_id=evento.id) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
 				if not isVisited:			
 					prepareToSend.append(evento.returnMap())
-
-		#print(position)
-		#print(get_ordered_list(position,41.411321,2.175568));
-		#print(sqrt((float(position[1]['x']) - 41.411321)**2 + (float(position[1]['y']) - 2.175568)**2))
 	
+	else:
+		prepareToSend.append("error")
+
 	datos = json.dumps(prepareToSend)
 	return HttpResponse(datos)
 
+from io import BytesIO
+import base64
 
 @csrf_exempt
 def sendImage(request):
-	image_data = str(request.body,"UTF-8")
+	info = json.loads(str(request.body,"UTF-8"))	
+	
+	if not info or 'img' not in info or 'brand' not in info:
+		return HttpResponse("false")
+
+	image_data = info['img']
+	brand = info['brand']
+
 	format, imgstr = image_data.split(';base64,') 
 	ext = format.split('/')[-1] 
-	image_name = str(uuid.uuid4()) + ".jpeg"
+	image_name = str(uuid.uuid4()) + '.' + ext
+
 	x = Imagen()
 	x.img = ContentFile(b64decode(imgstr), name=image_name)
 	x.save()
-	label = main(image_name)
-	print(label)
+
+	success = main(image_name, test_net, brand)
+	print(success)
 	
-	return HttpResponse(label)
+	return HttpResponse(success)
 
 
 def lista(request):
 
-	# Guardar evento en base de datos
-	#today = datetime.today()
-	#today = str(today).split(".")[0]
-	#eventos = Eventos(label='damm',nombre='Busca tabletas!',latitud='43',longitud='12',recompensa='2x1 BK',disponible='True',start=today).save()
 	eventos = EventoLimitado.objects.all()
 	prepareToSend = []
 	for evento in eventos:
@@ -187,11 +201,13 @@ def login(request):
 @csrf_exempt
 def checkLogin(request):
 
+	print("TOKEN")
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
 	if not infoUser or 'username' not in infoUser or 'token' not in infoUser:
 		return HttpResponse(datos)
 	datos = isTokenCorrect(infoUser['username'],infoUser['token'])
+	print("TOKEN: "+datos)
 
 	return HttpResponse(datos)
 

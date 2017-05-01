@@ -11,7 +11,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
     var infoWindowClose = false;
     var latLng = null;
     var options = {timeout: 10000, enableHighAccuracy: true};
-    var myImage = '/img/userMaps.png';
+    var myImage = 'img/userMaps.png';
     map = new google.maps.Map(document.getElementById("map"));
 
     // My marker
@@ -74,8 +74,8 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
 
     function createMarkers(){
       //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-      var eventoImg = '/img/eventoMaps.png';
-      var paradaImg = '/img/paradaMaps.png';
+      var eventoImg = 'img/eventoMaps.png';
+      var paradaImg = 'img/paradaMaps.png';
       for(var x = 0; x < markers.length; x++){
         if(markers[x] != null)
           markers[x].usado = false;
@@ -230,7 +230,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
           infoWindowClose = marker.infoWindow
           marker.infoWindow.open(map, marker);
           
-          if(!event.last_use){
+          if(!event.last_use && event.event_type == "parada"){
             addStop(event.id);
           }
 
@@ -251,7 +251,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
       }); 
 
     }
-    
+
 
   })
 

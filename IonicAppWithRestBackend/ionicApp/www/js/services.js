@@ -22,10 +22,10 @@ angular.module('myIonicApp')
 
 .factory('Token', function($q,$http,ApiEndpoint,$localstorage,$ionicPopup,$state) {
 
-
+    function checkToken() {
       var data = {username : $localstorage.get('name'), token : $localstorage.get('token')};
-      var success = "False";
-      var promise = $http({
+      var success = "false";
+      $http({
         method:'POST',
         url: ApiEndpoint.url+'checkLogin/', 
         data: data,
@@ -35,31 +35,32 @@ angular.module('myIonicApp')
 
       }).then(function successCallback(response) {
         success = response.data;
-        console.log(success)
-        if(success == "true"){
-          console.log("Token success: ",success)
-        }else{
+        if(success == "false"){
           var alertPopup = $ionicPopup.alert({
             title: '<u>Su sesión ha caducado</u>',
             template: 'Necesita volver a logear para usar la aplicación.'
           })
           $state.go('app.login');
         }
+        return success
         
 
       }, function errorCallback(response) {
         console.log("TOKEN ERROR");
-      }) 
+      })
+      return success 
+    }
 
-    return {isToken : function() { return $q.all(promise).then(function(){
-      return success
-    })}}
+    return {
+      isToken : checkToken
+    }
+
+    
 
 })
 
 .factory('FileService', function($http,ApiEndpoint,$ionicPopup) {
-  var images;
-  var IMAGE_STORAGE_KEY = 'images';
+
  
   function getFileContentAsBase64(path,callback){
     window.resolveLocalFileSystemURL(path, gotFile, fail);
@@ -81,34 +82,20 @@ angular.module('myIonicApp')
     }
   }
 
+
  
- 
- 
-  function getImages() {
-    var img = window.localStorage.getItem(IMAGE_STORAGE_KEY);
-    if (img) {
-      images = JSON.parse(img);
-    } else {
-      images = [];
-    }
-    return images;
-  };
- 
-  function addImage(img, path) {
-    images.push(img);
-    window.localStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(images));
+  function addImage(img, path, brand) {
+
 	  getFileContentAsBase64(path+img,function(base64Image){
-  		console.log(base64Image); 
 
       $http({
         method:'POST',
         url: ApiEndpoint.url+'sendImage/', 
-        data: JSON.stringify(base64Image),
+        data: {'img' : JSON.stringify(base64Image), 'brand' : brand},
 
       }).then(function successCallback(response) {
         result = response.data
-        console.log(result)
-        if(result == "random"){
+        if(result == "true"){
           var alertPopup = $ionicPopup.alert({
             title: '<u>Felicidades</u>',
             template: 'Has logrado la recompensa.'
@@ -129,7 +116,6 @@ angular.module('myIonicApp')
  
   return {
     storeImage: addImage,
-    images: getImages
   }
 })
 
@@ -145,31 +131,23 @@ angular.module('myIonicApp')
     return text;
   };
  
-  function optionsForType(type) {
+  function optionsForType() {
     var source;
-    switch (type) {
-      case 0:
-        source = Camera.PictureSourceType.CAMERA;
-        break;
-      case 1:
-        source = Camera.PictureSourceType.PHOTOLIBRARY;
-        break;
-    }
+    source = Camera.PictureSourceType.CAMERA;
+
     return {
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: source,
-      allowEdit: true,
       encodingType: Camera.EncodingType.JPEG,
       popoverOptions: CameraPopoverOptions,
-      targetWidth: 80,
-      targetHeight: 80,
       saveToPhotoAlbum: false
     };
   }
  
-  function saveMedia(type) {
+  function saveMedia(brand) {
     return $q(function(resolve, reject) {
-      var options = optionsForType(type);
+
+      var options = optionsForType();
  
       $cordovaCamera.getPicture(options).then(function(imageUrl) {
         var name = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
@@ -178,7 +156,7 @@ angular.module('myIonicApp')
 		
         $cordovaFile.copyFile(namePath, name, cordova.file.dataDirectory, newName)
           .then(function(info) {
-            FileService.storeImage(newName, cordova.file.dataDirectory);
+            FileService.storeImage(newName, cordova.file.dataDirectory, brand);
             resolve();
           }, function(e) {
             reject();
@@ -187,7 +165,7 @@ angular.module('myIonicApp')
     })
   }
   return {	
-    handleMediaDialog: saveMedia
+    takePhoto: saveMedia
   }
   
 });

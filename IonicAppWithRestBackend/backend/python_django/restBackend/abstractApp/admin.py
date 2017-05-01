@@ -27,7 +27,7 @@ class UserAdmin(BaseUserAdmin):
     inlines = (ImagenInline, EventoInline, EventoParadaInline, EventoLimitadoInline, UsuarioEventoParadaInline, UsuarioEventoLimitadoInline, RecompensaInline, UsuarioRecompensaInline,)
 
 class ModificarEvento(admin.ModelAdmin):
-	list_display = ('brand', 'event_name', 'event_description', 'event_fullDescription', 'event_direccion', 'event_provincia', 'event_pais', 'radio', 'latitud', 'longitud', 'reward', 'image')
+	list_display = ('event_name', 'brand', 'event_description', 'event_fullDescription', 'event_direccion', 'event_provincia', 'event_pais', 'radio', 'latitud', 'longitud', 'reward', 'image')
 
 class ModificarUsuario(admin.ModelAdmin):
 	inlines=[UsuarioRecompensaInline]
