@@ -34,6 +34,8 @@
 .eventTitle {
   padding-top: 10px;
   text-align: center;
+  font-size: 150%;
+  text-decoration: underline;
 }
 .appBackground {
   background-color: #365d89;
