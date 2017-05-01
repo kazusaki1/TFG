@@ -163,7 +163,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
         if(!evento.last_use){
           infoWindow.setContent(infoWindow.getContent() + '<p>Has recogido el premio</p>');
         } else {
-          infoWindow.setContent(infoWindow.getContent() + '<p><b>Disponible: </b>'+evento.last_use+'</p>');
+          infoWindow.setContent(infoWindow.getContent() + '<p><b>Último uso: </b>'+evento.last_use+'</p>');
         }
       }
 

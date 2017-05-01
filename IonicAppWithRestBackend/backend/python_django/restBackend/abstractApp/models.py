@@ -89,7 +89,7 @@ class Evento(models.Model):
     latitud = models.CharField(max_length=10,verbose_name='Latitud')
     longitud = models.CharField(max_length=10,verbose_name='Longitud')
     reward = models.OneToOneField(Recompensa,on_delete=models.CASCADE,unique=True,verbose_name='Recompensa')
-    image = models.ImageField(upload_to = '',verbose_name='Imagen')
+    image = models.ImageField(upload_to = 'eventos/',verbose_name='Imagen')
     
     class Meta:
         verbose_name_plural = "Crear evento"
@@ -110,7 +110,7 @@ class EventoParada(models.Model):
 
     def returnJSON(self):
         cooldown_formated = str(self.cooldown)
-        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'event_type':'parada','latitud':self.event.latitud,'longitud':self.event.longitud,'reward':self.event.reward.reward_name,'cooldown':cooldown_formated}
+        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description, 'event_type':'parada','latitud':self.event.latitud,'longitud':self.event.longitud,'reward':self.event.reward.reward_name,'cooldown':cooldown_formated}
 
     def returnMap(self):
         cooldown_formated = str(self.cooldown)
@@ -134,7 +134,7 @@ class EventoLimitado(models.Model):
     def returnJSON(self):
         ini_date_formated = str(self.ini_date).split("+")[0]
         exp_date_formated = str(self.exp_date).split("+")[0]
-        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description,'event_type':'limitado','latitud':self.event.latitud,'longitud':self.event.longitud,'reward':self.event.reward.reward_name,'ini_date':ini_date_formated,'exp_date':exp_date_formated}
+        return {'id':str(self.event.id),'brand':self.event.brand,'event_name':self.event.event_name,'event_description':self.event.event_description, 'event_fullDescription' : self.event.event_fullDescription, 'event_direccion' : self.event.event_direccion,'event_type':'limitado','latitud':self.event.latitud,'longitud':self.event.longitud,'reward':self.event.reward.reward_name,'ini_date':ini_date_formated,'exp_date':exp_date_formated}
 
     def returnMap(self):
         ini_date_formated = str(self.ini_date).split("+")[0]
