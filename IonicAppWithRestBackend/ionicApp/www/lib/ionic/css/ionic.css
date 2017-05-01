@@ -5362,6 +5362,19 @@ a.item-content {
   margin-bottom: 1%; 
 }
 
+.listMenu {
+  position: relative;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 0%;
+  padding-right: 10%;
+  margin-bottom: 1%; 
+}
+
+.listMenu:last-child {
+  margin-bottom: 0px; }
+  .listMenu:last-child.card {
+    margin-bottom: 40px; }
 
 .list:last-child {
   margin-bottom: 0px; }
@@ -7505,8 +7518,8 @@ a.button {
 .paddingLogin {
   padding-top: 5%;
   padding-bottom: 5%;
-  padding-left: 30%;
-  padding-right: 30%;}
+  padding-left: 25%;
+  padding-right: 25%;}
 
 .padding-top, .padding-vertical {
   padding-top: 10px; }
@@ -7625,11 +7638,15 @@ a.button {
   background-color: #444; }
 
 .headerMenu {
-  background-color: #b8bd9c;
+  background-color: #e65100;
 }
 
 .bodyMenu {
-  background-color: #b8bd9c;
+  background-color: #365d89;
+}
+
+.whiteFont {
+  color: #fff;
 }
 
 .dark-border {

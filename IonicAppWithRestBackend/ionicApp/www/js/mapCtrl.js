@@ -1,13 +1,14 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation,$localstorage,Token){
+module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordovaGeolocation,$localstorage,Token, ionicMaterialInk){
 
   var timer, timer2
+  
    // Code you want executed every time view is opened
   $scope.$on('$ionicView.enter', function() {
     
     Token.isToken()
-
+    ionicMaterialInk.displayEffect();
     var infoWindowClose = false;
     var latLng = null;
     var options = {timeout: 10000, enableHighAccuracy: true};

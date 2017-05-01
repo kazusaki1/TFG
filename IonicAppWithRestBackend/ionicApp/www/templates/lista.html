@@ -10,43 +10,28 @@
           <div class = "col">Fecha de inicio</div>
           <div class = "col">Participas?</div>
         </div>-->
-        <div class="list">
+    <div class="list">
 
-  <label class="item item-input item-select">
-    <div class="input-label">
-      Filtrar por
+      <label class="item item-input item-select">
+      <div class="input-label whiteFont">
+        Filtrar por
+      </div>
+      <select class="whiteFont" style="background-color: #e88e51">
+      <option selected class="whiteFont">---</option>
+      <option class="whiteFont">Localidad</option>
+      <option class="whiteFont">Fecha</option>
+      </select>
+    </label>
     </div>
-    <select>
-      <option selected>---</option>
-      <option>Localidad</option>
-      <option>Fecha</option>
-    </select>
-  </label>
-</div>
 
           
         
           
           <div ng-repeat="evento in lista">
-
-              <!--<ion-list >
-                <ion-item class="NoPadding eventColor">
-                <a class="item item-avatar eventColor">
-                  <img src="img/marc.jpg">
-                  <div style="margin-left: 40px;">{{evento.event_name}}</div>
-                  </a><button style="margin-top: 10px; margin-left: 300px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button>
-                
-                <p>
-                Localidad
-                </p>
-        
-                </ion-item>
-              </ion-list>-->
-
               
                 <div class="list card sombres eventColor animated bounceInRight">  
-                  <div class="item item-divider" style="text-align: center;">{{evento.event_name}}</div>
-                  <div class="item item-body">
+                  <div class="item whiteFont eventTitle" style="text-align: center;">{{evento.event_name}}</div>
+                  <div class="item item-body whiteFont">
                     <div>
                       {{evento.event_description}} 
                     </div>

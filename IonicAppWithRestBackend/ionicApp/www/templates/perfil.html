@@ -1,36 +1,38 @@
 <ion-view class="appBackground">
   <ion-content>
   
-    <div class="hero no-header flat">
+    <div class="hero no-header flat " style="margin-top: 10px;">
             <div class="content">
-            <div class="app-icon"></div>
-                <h1>user.name</h1>
+            <div class="app-icon "></div>
+                <h1 style="color: #fff;">user.name</h1>
             </div>
         </div>
 
-<div class="card sombres eventColor">
-      
+<div class="card sombres eventColor whiteFont" style="padding-top: 10px;">
+      <div class="eventTitle">Cambios en el perfil</div>
         <div class = "row">
-          <div class = "col">Desde</div>
-          <div class = "col">Total de eventos</div>
+          <div class = "col" style="margin-top: 10px;">Mail</div>
+          <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
         </div>
           <div class = "row">
-            <div class = "col">fecha registro</div>
-            <div class = "col">event.count()</div>
+            <div class = "col">Password</div>
+            <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
           <div class="row">
-            <div class = "col"></div>
+            <div class = "col">Nuevo Pass</div>
+            <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
           <div class="row">
-            <div class = "col"></div>
+            <div class = "col">Confirmar Pass</div>
+            <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
 
           
 
-          <div class="row">
+    </div>
 
-            <div class = "col">Cambio de pass</div>
-          </div>
+    <div class="centrado">
+      <button ui-sref="app.lista" class="button button-raised button-energized-900" >Actualizar</button>
     </div>
 
   </ion-content>
