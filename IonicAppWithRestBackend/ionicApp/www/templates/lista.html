@@ -26,10 +26,6 @@
 
     
     </div>
-
-
-          
-        
           
           <div ng-repeat="evento in lista">
               
@@ -40,14 +36,12 @@
                       {{evento.event_description}} 
                     </div>
                     <div class="row">
-                      <div class="col" style="margin-top: 40px;">{{evento.ini_date}}</div>
-                      <div class="col"><button style="margin-top: 10px; margin-left: 100px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button></div>
+                      <div class="col" style="margin-top: 40px;">Empieza el {{evento.ini_date}}</div>
+                      <div class="col col-33"><button style="margin-top: 25px; margin-left: 30px;" class="button button-test" ui-sref="app.evento({id: '{{evento.id}}'})" )>Entrar</button></div>
                     </div>
                   </div>
                
               </dic>
-
-               
 
           </div>
             
