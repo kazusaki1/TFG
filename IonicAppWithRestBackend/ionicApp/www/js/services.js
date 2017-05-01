@@ -59,7 +59,7 @@ angular.module('myIonicApp')
 
 })
 
-.factory('FileService', function($http,ApiEndpoint,$ionicPopup) {
+.factory('FileService', function($http,ApiEndpoint,$ionicPopup,$localstorage,$state) {
 
  
   function getFileContentAsBase64(path,callback){
@@ -84,15 +84,17 @@ angular.module('myIonicApp')
 
 
  
-  function addImage(img, path, brand) {
+  function addImage(img, path, brand, event_id) {
 
 	  getFileContentAsBase64(path+img,function(base64Image){
 
       $http({
         method:'POST',
         url: ApiEndpoint.url+'sendImage/', 
-        data: {'img' : JSON.stringify(base64Image), 'brand' : brand},
-
+        data: {'username' : $localstorage.get('name'), 'token' : $localstorage.get('token'), 'img' : JSON.stringify(base64Image), 'brand' : brand, 'event_id' : event_id},
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        }
       }).then(function successCallback(response) {
         result = response.data
         if(result == "true"){
@@ -100,6 +102,7 @@ angular.module('myIonicApp')
             title: '<u>Felicidades</u>',
             template: 'Has logrado la recompensa.'
           })
+          $state.go('app.home');
         } else {
           var alertPopup = $ionicPopup.alert({
             title: '<u>Lo siento</u>',
@@ -144,7 +147,7 @@ angular.module('myIonicApp')
     };
   }
  
-  function saveMedia(brand) {
+  function saveMedia(brand, event_id) {
     return $q(function(resolve, reject) {
 
       var options = optionsForType();
@@ -156,7 +159,7 @@ angular.module('myIonicApp')
 		
         $cordovaFile.copyFile(namePath, name, cordova.file.dataDirectory, newName)
           .then(function(info) {
-            FileService.storeImage(newName, cordova.file.dataDirectory, brand);
+            FileService.storeImage(newName, cordova.file.dataDirectory, brand, event_id);
             resolve();
           }, function(e) {
             reject();

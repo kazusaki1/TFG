@@ -13,16 +13,20 @@
     <div class="list">
 
       <label class="item item-input item-select">
-      <div class="input-label whiteFont">
-        Filtrar por
-      </div>
-      <select class="whiteFont" style="background-color: #e88e51">
-      <option selected class="whiteFont">---</option>
-      <option class="whiteFont">Localidad</option>
-      <option class="whiteFont">Fecha</option>
-      </select>
-    </label>
+        <div class="input-label whiteFont">
+          Filtrar por:
+        </div>
+        
+        <select ng-options="option for option in listOfOptions" class="whiteFont" style="background-color: #e88e51"
+          ng-model="selectedItem"
+          ng-change="selectedItemChanged(selectedItem)"
+          >
+        </select>
+      </label>
+
+    
     </div>
+
 
           
         

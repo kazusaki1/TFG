@@ -248,7 +248,10 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
       $http({
         method: 'POST',
         url: ApiEndpoint.url+ 'eventoParada/',
-        data: id,
+        data: {'username' : $localstorage.get('name'), 'event_id' : id},
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        }
       }); 
 
     }

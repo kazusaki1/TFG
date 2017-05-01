@@ -4,7 +4,6 @@ module.controller('LogoutCtrl',function($state,$localstorage,$scope,$ionicHistor
 
 	$scope.logout = function() {
 		$ionicHistory.clearCache();
-		$ionicHistory.clearHistory();
 		$localstorage.clear('name');
 		$localstorage.clear('token');
 		$state.go('app.login');

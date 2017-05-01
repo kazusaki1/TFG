@@ -28,24 +28,27 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
     controller: 'AppCtrl'
   })
   .state('app.login', {
-      url: '/login',
-      views: {
-        'menuContent': {
-            templateUrl: 'templates/login.html',
-            controller: 'LoginCtrl'
-        }
+    cache: false,
+    url: '/login',
+    views: {
+      'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+      }
     }   
   })
   .state('app.register', {
-      url: '/register',
-      views: {
-        'menuContent': {
-            templateUrl: 'templates/register.html',
-            controller: 'RegisterCtrl'
-        }
+    cache: false,
+    url: '/register',
+    views: {
+      'menuContent': {
+          templateUrl: 'templates/register.html',
+          controller: 'RegisterCtrl'
+      }
     }   
   })
   .state('app.home',{
+    cache: false,
     url: '/home',
     views: {
         'menuContent': {
@@ -55,16 +58,8 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
         }
     }
   })
-  .state('app.foto',{
-    url: '/foto',
-    views: {
-        'menuContent': {
-            templateUrl: 'templates/upload.html',
-            controller: 'ImageCtrl'
-        }
-    }
-  })
   .state('app.lista',{
+    cache: false,
     url: '/lista',
     views: {
         'menuContent': {
@@ -74,6 +69,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
     }
   })  
   .state('app.evento',{
+    cache: false,
     url: '/evento/:id',
     views: {
         'menuContent': {
@@ -83,6 +79,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
     }
   })
   .state('app.perfil',{
+    cache: false,
     url: '/perfil',
     views: {
         'menuContent': {

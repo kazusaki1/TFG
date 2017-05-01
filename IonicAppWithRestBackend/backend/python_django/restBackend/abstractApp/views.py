@@ -83,9 +83,12 @@ import base64
 @csrf_exempt
 def sendImage(request):
 	info = json.loads(str(request.body,"UTF-8"))	
-	
-	if not info or 'img' not in info or 'brand' not in info:
-		return HttpResponse("false")
+	success = "false"
+	if not info or 'username' not in info or 'token' not in info or 'img' not in info or 'brand' not in info or 'event_id' not in info:
+		return HttpResponse(success)
+
+	if isTokenCorrect(info['username'],info['token']) == "false":
+		return HttpResponse(success)
 
 	image_data = info['img']
 	brand = info['brand']
@@ -99,40 +102,77 @@ def sendImage(request):
 	x.save()
 
 	success = main(image_name, test_net, brand)
+
+	if success == "true":
+		try:
+			user = User.objects.get(username=info['username'])
+			evento = EventoLimitado.objects.get(event_id=info['event_id'])
+			UsuarioEventoLimitado(event_id=evento.id,user_id=user.id).save()
+			
+		except User.DoesNotExist:
+			success = "false"
+		except EventoLimitado.DoesNotExist:
+			success = "false"
+		except:
+			success = "false"
+
+
 	print(success)
+
 	
 	return HttpResponse(success)
 
-
+@csrf_exempt
 def lista(request):
 
-	eventos = EventoLimitado.objects.all()
-	prepareToSend = []
-	for evento in eventos:
-		prepareToSend.append(evento.returnJSON())
+	user = str(request.body,"UTF-8")
+	try:
+		user = User.objects.get(username=user)	
+		eventos = EventoLimitado.objects.all()
+		prepareToSend = []
+		for evento in eventos:
+			if not UsuarioEventoLimitado.objects.filter(event_id=evento.id,user_id=user.id):
+				prepareToSend.append(evento.returnJSON())
 	
-	datos = json.dumps(prepareToSend)
+		datos = json.dumps(prepareToSend)
+	except:
+		datos = "error"
 	return HttpResponse(datos)
 
-def listaFiltrada(request,type):
+@csrf_exempt
+def listaFiltrada(request):
 
-	if type[0] == "f":
-		# FILTRAR POR FECHA
-		eventos = EventoLimitado.objects.all()
+	info = json.loads(str(request.body,"UTF-8"))
+	if not info or 'username' not in info or 'type' not in info:
+		return HttpResponse("error")
 
-	elif type[0] == "p":
-		# FILTRAR POR PROVINCIA
-		eventos = EventoLimitado.objects.all()
+	try:
+		if info['type'] == "f":
+			# FILTRAR POR FECHA
+			eventos = EventoLimitado.objects.all()
 
+		elif info['type'] == "l":
+			# FILTRAR POR LOCALIDAD
+			eventos = EventoLimitado.objects.all()
+
+		else:
+			# MOSTRAR TODO
+			eventos = EventoLimitado.objects.all()
+
+
+		user = User.objects.get(username=info['username'])
+		prepareToSend = []
+		for evento in eventos:
+			if not UsuarioEventoLimitado.objects.filter(event_id=evento.id,user_id=user.id):
+				prepareToSend.append(evento.returnJSON())
 	
+		datos = json.dumps(prepareToSend)
+	except:
+		datos = "error"
 
-	prepareToSend = []
-	for evento in eventos:
-		prepareToSend.append(evento.returnJSON())
-	
-	datos = json.dumps(prepareToSend)
 	return HttpResponse(datos)
 	
+
 def evento(request,id):
 
     evento = EventoLimitado.objects.get(event_id=id)
@@ -146,21 +186,26 @@ def evento(request,id):
 @csrf_exempt
 def eventoParada(request):
 
-	evento = EventoParada.objects.get(event_id=request.body)
-	eventoParada = UsuarioEventoParada.objects.get(event_id=evento.id,user_id=1) # MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
 
-	reward = Evento.objects.get(id=request.body)
-	key = generarKey()
-	UsuarioRecompensa(key=key,reward_id=reward.reward_id,user_id=1).save()# MODIFICAR USER_ID=1 POR USER_ID=REQUEST.USER.ID !!
+	info = json.loads(str(request.body,"UTF-8"))	
+	if info and 'username' in info and 'event_id' in info:
+		user = User.objects.get(username=info['username'])
+		evento = EventoParada.objects.get(event_id=info['event_id'])
+		try:
+			eventoParada = UsuarioEventoParada.objects.get(event_id=evento.id,user_id=user.id)
+		except UsuarioEventoParada.DoesNotExist:
+			eventoParada = UsuarioEventoParada(event_id=evento.id,user_id=user.id)
 
-	date_today_formated = str(datetime.today()).split(".")[0]
-	eventoParada.last_use=date_today_formated
-	eventoParada.save()
-	prepareToSend = []
-	prepareToSend.append(eventoParada.returnJSON())
-	datos = json.dumps(prepareToSend)
+		date_today_formated = str(datetime.today()).split(".")[0]
+		eventoParada.last_use=date_today_formated
+		eventoParada.save()
+
+		reward = Evento.objects.get(id=info['event_id'])
+		key = generarKey()
+		UsuarioRecompensa(key=key,reward_id=reward.reward_id,user_id=user.id).save()
+
     
-	return HttpResponse(datos)
+	return HttpResponse()
 
 def generarKey():
 
