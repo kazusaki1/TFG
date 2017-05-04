@@ -89,6 +89,7 @@ angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'i
     }
   })
   .state('app.recompensa',{
+    cache: false,
     url: '/recompensa',
     views: {
         'menuContent': {

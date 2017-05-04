@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'perfil/', views.perfil, name='perfil'),
+    url(r'perfilPropio/(?P<name>.*)/', views.ourPerfil, name='ourPerfil'),
     url(r'lista/', views.lista, name='lista'),
     url(r'listaFiltrada', views.listaFiltrada, name='listaFiltrada'),
     url(r'evento/(?P<id>.*)/',views.evento, name='evento'),
