@@ -12,24 +12,20 @@
       <div class="eventTitle">Cambios en el perfil</div>
         <div class = "row">
           <div class = "col" style="margin-top: 10px;">Mail</div>
-          <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+          <ion-md-input placeholder="" ng-model="data.email" style="border: none; padding-top: 0%; max-width: 70%;">{{user.mail}}</ion-md-input>
         </div>
-          <div class = "row">
-            <div class = "col">Password</div>
-            <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
-          </div>
-          <div class="row">
-            <div class = "col">Nuevo Pass</div>
-            <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+          <div class="row" >
+            <div class = "col" style="margin-top: 10px;">Nuevo Pass</div>
+            <ion-md-input placeholder="" ng-model="data.pasword" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
           <div class="row">
             <div class = "col">Confirmar Pass</div>
-            <ion-md-input placeholder="" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+            <ion-md-input placeholder="" ng-model="data.confirmPassword" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
     </div>
 
     <div class="centrado">
-      <button ui-sref="app.lista" class="button button-raised button-energized-900" >Actualizar</button>
+      <button ui-sref="app.perfil" ng-click="actualizar()" class="button button-raised button-energized-900">Actualizar</button>
     </div>
 
   </ion-content>

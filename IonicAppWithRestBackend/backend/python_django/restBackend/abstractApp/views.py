@@ -286,4 +286,9 @@ def register(request):
 
 	return HttpResponse(datos)
 
-	
+def ourPerfil(request, name):
+	info = User.objects.get(username=name)
+	prepareToSend = []
+	prepareToSend.append(info.returnJSON())
+	datos = json.dumps(prepareToSend)
+	return HttpResponse(datos)

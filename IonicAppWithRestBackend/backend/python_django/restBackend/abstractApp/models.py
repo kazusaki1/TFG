@@ -43,6 +43,9 @@ class Usuario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=40)
 
+    def returnEmailJSON(self):
+        return {'email':str(self.user.email)}
+
 class Imagen(models.Model):
     img = models.ImageField(upload_to = '',verbose_name='Imagen')
 

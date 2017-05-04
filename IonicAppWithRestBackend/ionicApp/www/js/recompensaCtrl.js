@@ -1,6 +1,6 @@
-angular.module('myIonicApp.controllers', [])
+var module = angular.module('myIonicApp.controllers');
 
-.controller('RecompensaCtrl', function($scope, $ionicModal, $timeout, ApiEndpoint, ionicMaterialInk) {
+module.controller('RecompensaCtrl', function($scope, $ionicModal, $timeout, ApiEndpoint, ionicMaterialInk) {
 
 	ionicMaterialInk.displayEffect();
 })
