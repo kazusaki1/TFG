@@ -5,15 +5,21 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicModal, $timeout, $
 	ionicMaterialInk.displayEffect();
 
 	$scope.userInfo = [];
+	var data = {name : $localstorage.get('name')}
+	console.log(data);
   	$http({
-    	method: 'GET',
-    	url: ApiEndpoint.url+ 'perfilPropio/'+ $localstorage.get['name'],
-  	}).then(function successCallback(response) {      
-     	$scope.userInfo = [];
+    	method: 'POST',
+    	data: data,
+    	url: ApiEndpoint.url+ 'perfilPropio/',
+    	headers: {
+		      'Content-Type': 'application/json; charset=UTF-8',
+		}
+  	}).then(function successCallback(response) {    
+      	
       	for(var r in response.data) {
-        	var info = response.data[r];
-        	$scope.userInfo.push(info);       
-      }
+          var datos = response.data[r];
+          $scope.userInfo.push(datos);       
+        };
 
   }, function errorCallback(response) {
 

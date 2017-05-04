@@ -286,9 +286,33 @@ def register(request):
 
 	return HttpResponse(datos)
 
-def ourPerfil(request, name):
-	info = User.objects.get(username=name)
-	prepareToSend = []
-	prepareToSend.append(info.returnJSON())
-	datos = json.dumps(prepareToSend)
+@csrf_exempt
+def ourPerfil(request):
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	if not infoUser or 'name' not in infoUser:
+		return HttpResponse('marc')
+
+	
+	try:
+		info = User.objects.get(username=infoUser['name'])
+		prepareToSend = []
+		prepareToSend.append(info.email)
+		prepareToSend.append(info.username)
+		datos = json.dumps(prepareToSend)
+		return HttpResponse(datos)
+	except:
+		return HttpResponse('false')
+
+def actualizarPerfil(request):
+	datos = "false"
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	if not infoUser or 'email' not in infoUser:
+		return HttpResponse(datos)
+	
+	try:
+		User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
+		datos = "true"
+	except:
+		datos = "false"
+
 	return HttpResponse(datos)
