@@ -6,7 +6,7 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicModal, $timeout, $
 
 	$scope.userInfo = [];
 	var data = {name : $localstorage.get('name')}
-	console.log(data);
+	console.log(data);    
   	$http({
     	method: 'POST',
     	data: data,
@@ -18,8 +18,9 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicModal, $timeout, $
       	
       	for(var r in response.data) {
           var datos = response.data[r];
-          $scope.userInfo.push(datos);       
+          $scope.userInfo.push(datos);   
         };
+
 
   }, function errorCallback(response) {
 

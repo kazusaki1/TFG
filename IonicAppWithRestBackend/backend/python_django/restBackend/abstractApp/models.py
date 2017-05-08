@@ -77,7 +77,7 @@ class UsuarioRecompensa(models.Model):
         verbose_name = "recompensa"
 
     def __str__(self):
-        return ''
+        return '['+str(self.user.username)+'] '+self.reward+': '+self.key
 
 
 class Evento(models.Model):
@@ -177,7 +177,6 @@ class UsuarioEventoParada(models.Model):
         last_use_formated = str(self.last_use).split("+")[0]
         cooldown_formated = str(self.event.cooldown)
         return {'id':str(self.event.event.id),'event_name':self.event.event.event_name.upper(),'event_type':'parada','latitud':self.event.event.latitud,'longitud':self.event.event.longitud,'reward':self.event.event.reward.reward_name,'last_use':last_use_formated,'cooldown':cooldown_formated}
-
 
     def isAvaible(self):
         up_time = self.last_use+timedelta(days=self.event.cooldown.days,seconds=self.event.cooldown.seconds)

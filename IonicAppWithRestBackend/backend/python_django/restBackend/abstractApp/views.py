@@ -290,10 +290,11 @@ def register(request):
 def ourPerfil(request):
 	infoUser = json.loads(str(request.body,"UTF-8"))
 	if not infoUser or 'name' not in infoUser:
-		return HttpResponse('marc')
+		return HttpResponse('false')
 
 	
 	try:
+		print(infoUser['name'])
 		info = User.objects.get(username=infoUser['name'])
 		prepareToSend = []
 		prepareToSend.append(info.email)
@@ -306,13 +307,50 @@ def ourPerfil(request):
 def actualizarPerfil(request):
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
-	if not infoUser or 'email' not in infoUser:
+	if not infoUser:
 		return HttpResponse(datos)
-	
+
+	elif 'email' in infoUser and 'password' not in infoUser and 'confirmPassword' not in infoUser:
+		#solo cambio de email
+		return HttpResponse(datos)
+	elif 'email' not in infoUser and 'password' not in infoUser and 'confirmPassword' not in infoUser:
+		#no se ha rellenado nada
+		return HttpResponse(datos)
+	elif 'email' not in infoUser and 'password' in infoUser and 	'confirmPassword' not in infoUser:
+		#falta confirmar pass
+		return HttpResponse(datos)
+	elif 'email' not in infoUser and infoUser['password'] != infoUser['confirmPassword']:
+		#pass diferentes
+		return HttpResponse(datos)
+
 	try:
+		#cambiarlo todo
 		User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
 		datos = "true"
 	except:
 		datos = "false"
 
 	return HttpResponse(datos)
+
+@csrf_exempt
+def eventosDeUsuario(request):
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	print("marc1")
+	if not infoUser or 'name' not in infoUser:
+		print("marc2")
+		return HttpResponse('false')
+
+	try:
+		user = User.objects.get(username=infoUser['name'])
+		print("marc3")
+		print(user.id)
+		info = UsuarioRecompensa.objects.get(user_id=user.id)
+		print("marc4")
+		prepareToSend = []
+		prepareToSend.append(info.username)
+		prepareToSend.append(info.reward)
+		prepareToSend.append(info.key)
+		datos = json.dumps(prepareToSend)
+		return HttpResponse(datos)
+	except:
+		return HttpResponse('false')
