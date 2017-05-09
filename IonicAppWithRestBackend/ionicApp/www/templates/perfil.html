@@ -12,14 +12,14 @@
       <div class="eventTitle">Cambios en el perfil</div>
         <div class = "row">
           <div class = "col" style="margin-top: 10px;">Mail</div>
-          <ion-md-input placeholder="{{userInfo[0]}}"  style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+          <ion-md-input placeholder="{{userInfo[0]}}"  ng-model="data.email" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
         </div>
           <div class="row" >
-            <div class = "col" style="margin-top: 10px;">Nuevo Pass</div>
-            <ion-md-input placeholder="" ng-model="data.pasword" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+            <div class = "col" style="margin-top: 10px;">New Password</div>
+            <ion-md-input placeholder="" ng-model="data.password" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
           <div class="row">
-            <div class = "col">Confirmar Pass</div>
+            <div class = "col">Confirm Password</div>
             <ion-md-input placeholder="" ng-model="data.confirmPassword" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
     </div>

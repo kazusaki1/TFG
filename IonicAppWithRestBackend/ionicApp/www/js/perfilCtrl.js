@@ -1,6 +1,6 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('PerfilCtrl', function($scope, $http, $ionicModal, $timeout, $localstorage, ApiEndpoint, ionicMaterialInk) {
+module.controller('PerfilCtrl', function($scope, $http, $ionicPopup, $state, $ionicModal, $timeout, $localstorage, ApiEndpoint, ionicMaterialInk) {
 
 	ionicMaterialInk.displayEffect();
 
@@ -31,11 +31,11 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicModal, $timeout, $
 	$scope.data = {};
 	$scope.actualizar = function() {
 
-		var data = {username : $scope.data.email, password : $scope.data.password, confirmPassword : $scope.data.confirmPassword};
+		var data = {name : $localstorage.get('name'), email : $scope.data.email, password : $scope.data.password, confirmPassword : $scope.data.confirmPassword};
 		var success = false;
 		$http({
 			method:'POST',
-			url: ApiEndpoint.url+'perfil/', 
+			url: ApiEndpoint.url+'perfilActualizado/', 
 			data: data,
 			headers: {
 		      'Content-Type': 'application/json; charset=UTF-8',
@@ -43,6 +43,21 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicModal, $timeout, $
 
 		}).then(function successCallback(response) {
 			success = response.data
+
+			if(success == "true"){
+				var alertPopup = $ionicPopup.alert({
+			      title: '<u>Datos modificados con éxito</u>',
+			      template: 'Pulsa Ok para aparecer en la Home'
+			    })
+	            $state.go('app.home');
+			}
+				
+	        else{
+				var alertPopup = $ionicPopup.alert({
+			      title: '<u>Error al modificar datos</u>',
+			      template: 'Try again.'
+			    })
+	        }
 
 			
 

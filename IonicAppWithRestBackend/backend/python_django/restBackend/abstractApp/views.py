@@ -304,30 +304,39 @@ def ourPerfil(request):
 	except:
 		return HttpResponse('false')
 
+@csrf_exempt
 def actualizarPerfil(request):
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
+	print('marc1')
 	if not infoUser:
 		return HttpResponse(datos)
-
-	elif 'email' in infoUser and 'password' not in infoUser and 'confirmPassword' not in infoUser:
+	
+	if 'email' in infoUser and 'password' not in infoUser and 'confirmPassword' not in infoUser:
 		#solo cambio de email
+		user = User.objects.get(username=infoUser['name'])
+		user.email = infoUser['email']
+		user.save()
+		datos = "true"
 		return HttpResponse(datos)
-	elif 'email' not in infoUser and 'password' not in infoUser and 'confirmPassword' not in infoUser:
-		#no se ha rellenado nada
+	if 'email' not in infoUser:
+		if infoUser['password'] == infoUser['confirmPassword']:
+			#solo cambio de pass
+			user = User.objects.get(username=infoUser['name'])
+			user.set_password(infoUser['password'])
+			user.save()
+			datos = "true"
+			return HttpResponse(datos)
+		#pass incorrectas
 		return HttpResponse(datos)
-	elif 'email' not in infoUser and 'password' in infoUser and 	'confirmPassword' not in infoUser:
-		#falta confirmar pass
-		return HttpResponse(datos)
-	elif 'email' not in infoUser and infoUser['password'] != infoUser['confirmPassword']:
-		#pass diferentes
-		return HttpResponse(datos)
-
+	
 	try:
 		#cambiarlo todo
-		User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
+		#User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
+		print('lol')
 		datos = "true"
 	except:
+		print('marc3231')
 		datos = "false"
 
 	return HttpResponse(datos)
