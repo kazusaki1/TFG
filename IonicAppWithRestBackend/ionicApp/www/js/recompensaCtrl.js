@@ -4,7 +4,7 @@ module.controller('RecompensaCtrl', function($scope, $http, $ionicModal, $timeou
 
 	ionicMaterialInk.displayEffect();
 
-	$scope.userInfo = [];
+	$scope.eventosDeUsuario = [];
 	var data = {name : $localstorage.get('name')}
 	console.log(data);    
   	$http({
@@ -15,10 +15,10 @@ module.controller('RecompensaCtrl', function($scope, $http, $ionicModal, $timeou
 		      'Content-Type': 'application/json; charset=UTF-8',
 		}
   	}).then(function successCallback(response) {    
-      	
+      	$scope.eventosDeUsuario = [];
       	for(var r in response.data) {
-          var datos = response.data[r];
-          $scope.userInfo.push(datos);   
+          var evento = response.data[r];
+          $scope.eventosDeUsuario.push(evento);   
         };
 
 

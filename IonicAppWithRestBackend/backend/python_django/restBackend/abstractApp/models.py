@@ -79,6 +79,10 @@ class UsuarioRecompensa(models.Model):
     def __str__(self):
         return '['+str(self.user.username)+'] '+self.reward+': '+self.key
 
+    def returnJSON(self):
+        print("empieza")
+        return {'reward':self.reward.reward_name,'key':self.key}
+
 
 class Evento(models.Model):
     brand = models.CharField(max_length=50,verbose_name='Marca')

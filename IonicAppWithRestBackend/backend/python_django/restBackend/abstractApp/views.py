@@ -342,14 +342,12 @@ def eventosDeUsuario(request):
 
 	try:
 		user = User.objects.get(username=infoUser['name'])
-		print("marc3")
-		print(user.id)
-		info = UsuarioRecompensa.objects.get(user_id=user.id)
-		print("marc4")
+		info = UsuarioRecompensa.objects.filter(user_id=user.id)
 		prepareToSend = []
-		prepareToSend.append(info.username)
-		prepareToSend.append(info.reward)
-		prepareToSend.append(info.key)
+
+		for recompensa in info:
+			prepareToSend.append(recompensa.returnJSON())
+
 		datos = json.dumps(prepareToSend)
 		return HttpResponse(datos)
 	except:
