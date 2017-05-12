@@ -188,7 +188,7 @@ def getNextImageBatch(split=TRAIN):
     y_b = np.zeros((BATCH_SIZE, 10), dtype='float32')
 
     #fill batch
-    for chunk in getDatasetChunk(split):        
+    for chunk in getDatasetChunk(split):       
         ib = 0
         for path in chunk:
             #load image data and class label from path
@@ -283,9 +283,9 @@ def showConfusionMatrix():
    
    
 
-with np.load('model.npz') as f:
-    param_values = [f['arr_%d' % i] for i in range(len(f.files))]
-lasagne.layers.set_all_param_values(NET, param_values)
+#with np.load('model.npz') as f:
+#    param_values = [f['arr_%d' % i] for i in range(len(f.files))]
+#lasagne.layers.set_all_param_values(NET, param_values)
    
  ###################### TRAINING #########################
  
@@ -295,9 +295,8 @@ train_loss = []
 val_loss = []
 val_accuracy = []
 total_time = time.time()
-cont = 0
 
-for epoch in range(0, 1):
+for epoch in range(0, 2000):
  
     #start timer
     start_time = time.time()
@@ -329,8 +328,8 @@ for epoch in range(0, 1):
     val_loss.append(np.mean(v_l))
     val_accuracy.append(np.mean(v_a))
  
-    if cont == 600 or cont == 700 or cont == 800 or cont == 900 or cont == 1000 or cont == 1100 or cont == 1200 or cont == 1300 or cont == 1400 or cont == 1500 or cont == 1600 or cont == 1700 or cont == 1800 or cont == 1900: 
-        np.savez(DATASET_PATH+'model'+str(cont)+'.npz', *lasagne.layers.get_all_param_values(NET))
+    if epoch % 100 == 0 and epoch > 0: 
+        np.savez(DATASET_PATH+'model'+str(epoch)+'.npz', *lasagne.layers.get_all_param_values(NET))
 	#print stats for epoch
     print("EPOCH:", epoch)
     print("TRAIN LOSS:", train_loss[-1])
@@ -338,7 +337,6 @@ for epoch in range(0, 1):
     print("VAL ACCURACY:", (int(val_accuracy[-1] * 1000) / 10.0), "%")
     print("TIME:", (time.time() - start_time), "s")
  
-    cont += 1
     showConfusionMatrix()
 	
 
@@ -347,7 +345,7 @@ print("TOTAL TIME:", (time.time() - total_time), "s")
 print("TRAINING DONE!")
 
 # Optionally, you could now dump the network weights to a file like this:
-np.savez(DATASET_PATH+'model.npz', *lasagne.layers.get_all_param_values(NET))
+#np.savez(DATASET_PATH+'model.npz', *lasagne.layers.get_all_param_values(NET))
 #
 # And load them again later on like this:
 # with np.load('model.npz') as f:
