@@ -4,23 +4,23 @@
     <div class="hero no-header flat " style="margin-top: 10px;">
             <div class="content">
             <div class="app-icon "></div>
-                <h1 style="color: #fff;">{{userInfo[1]}}</h1>
+                <h1 style="color: #fff;">{{username}}</h1>
             </div>
         </div>
 
 <div class="card sombres eventColor whiteFont" style="padding-top: 10px;">
-      <div class="eventTitle">Cambios en el perfil</div>
+      <div class="eventTitle">Modificar perfil</div>
         <div class = "row">
           <div class = "col" style="margin-top: 10px;">Mail</div>
           <ion-md-input placeholder="{{userInfo[0]}}"  ng-model="data.email" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
         </div>
           <div class="row" >
             <div class = "col" style="margin-top: 10px;">New Password</div>
-            <ion-md-input placeholder="" ng-model="data.password" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+            <ion-md-input placeholder="" type="password" ng-model="data.password" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
           <div class="row">
             <div class = "col">Confirm Password</div>
-            <ion-md-input placeholder="" ng-model="data.confirmPassword" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
+            <ion-md-input placeholder="" type="password" ng-model="data.confirmPassword" style="border: none; padding-top: 0%; max-width: 70%;"></ion-md-input>
           </div>
     </div>
 

@@ -4,7 +4,7 @@
     <div class="hero no-header flat " style="margin-top: 10px;">
         <div class="content">
         <div class="app-icon "></div>
-            <h1 style="color: #fff;">user.name {{infoUser[0].key}} {{infoUser[0]}} {{infoUser[2]}}</h1>
+            <h1 style="color: #fff;">{{username}}</h1>
         </div>
     </div>
 
@@ -15,10 +15,9 @@
 
             <div>{{evento.reward}}</div>
             
-            <a style="text-decoration: none; color: white;" href="" ng-click="showme=!showme">Mostrar recompensa</a>
+            <a style="text-decoration: none; color: white;" href="" ng-click="mostrar(evento)">{{evento.mostrar}}</a>
             
-            <div class="col" style="margin-top: 40px;" ng-hide="showme">**************</div>
-            <div class="col" style="margin-top: 40px;" ng-show="showme">{{evento.key}}</div>
+            <div class="col" style="margin-top: 40px;">{{evento.resultado}}</div>
             
           </div>
                

@@ -4,6 +4,7 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicPopup, $state, $io
 
 	ionicMaterialInk.displayEffect();
 
+	$scope.username = $localstorage.get('name')
 	$scope.userInfo = [];
 	var data = {name : $localstorage.get('name')}
 	console.log(data);    
@@ -46,8 +47,7 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicPopup, $state, $io
 
 			if(success == "true"){
 				var alertPopup = $ionicPopup.alert({
-			      title: '<u>Datos modificados con éxito</u>',
-			      template: 'Pulsa Ok para aparecer en la Home'
+			      template: 'Se ha modificado su perfil correctamente'
 			    })
 	            $state.go('app.home');
 			}
@@ -55,7 +55,7 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicPopup, $state, $io
 	        else{
 				var alertPopup = $ionicPopup.alert({
 			      title: '<u>Error al modificar datos</u>',
-			      template: 'Try again.'
+			      template: 'No se ha podido modificar su perfil.'
 			    })
 	        }
 
