@@ -108,7 +108,10 @@ def sendImage(request):
 			user = User.objects.get(username=info['username'])
 			evento = EventoLimitado.objects.get(event_id=info['event_id'])
 			UsuarioEventoLimitado(event_id=evento.id,user_id=user.id).save()
-			
+			#crear key etc
+			reward = Evento.objects.get(id=info['event_id'])
+			key = generarKey()
+			UsuarioRecompensa(key=key,reward_id=reward.reward_id,user_id=user.id).save()
 		except User.DoesNotExist:
 			success = "false"
 		except EventoLimitado.DoesNotExist:
@@ -331,8 +334,12 @@ def actualizarPerfil(request):
 		return HttpResponse(datos)
 	
 	try:
-		#cambiarlo todo
+		#cambiarlo todo(mail/pass)
 		#User.objects.create_user(username=infoUser['username'], password=infoUser['password'], email=infoUser['email']).save()
+		user = User.objects.get(username=infoUser['name'])
+		user.email = infoUser['email']
+		user.set_password(infoUser['password'])
+		user.save()
 		print('lol')
 		datos = "true"
 	except:
