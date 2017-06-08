@@ -1,5 +1,5 @@
 <ion-view class="appBackground">
-  <ion-content scroll="false">
+  <ion-content scroll="true">
   
     <div class="list">
 
@@ -15,7 +15,22 @@
         </select>
       </label>
 
-    
+      <div ng-show="selectedItem == 'Localidad'">
+        <label class="item item-input item-select">
+        <div class="input-label whiteFont">
+        </div>
+        
+        <select ng-options="provincia for provincia in listOfOptions2" class="whiteFont" style="background-color: #e88e51"
+          ng-model="selectedItem2"
+          ng-change="selectedItemChanged2(selectedItem2)"
+          >
+        </select>
+        </label>
+      </div>
+
+      <div ng-show="selectedItem == 'Fecha'">gfdsfs
+        Fecha
+      </div>
     </div>
           
           <div ng-repeat="evento in lista">
@@ -35,8 +50,6 @@
               </dic>
 
           </div>
-            
-      
   
   </ion-content>
 </ion-view>

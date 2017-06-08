@@ -13,7 +13,7 @@ from math import sqrt
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from uuid import uuid4
-
+from django.core import serializers
 import PIL
 from PIL import Image
 from scipy import misc
@@ -127,7 +127,6 @@ def sendImage(request):
 
 @csrf_exempt
 def lista(request):
-
 	user = str(request.body,"UTF-8")
 	try:
 		user = User.objects.get(username=user)	
@@ -135,6 +134,7 @@ def lista(request):
 		prepareToSend = []
 		for evento in eventos:
 			if not UsuarioEventoLimitado.objects.filter(event_id=evento.id,user_id=user.id):
+				print(evento)
 				prepareToSend.append(evento.returnJSON())
 	
 		datos = json.dumps(prepareToSend)
@@ -146,30 +146,49 @@ def lista(request):
 def listaFiltrada(request):
 
 	info = json.loads(str(request.body,"UTF-8"))
-	if not info or 'username' not in info or 'type' not in info:
+	if not info or 'username' not in info or 'type' not in info or 'info' not in info:
 		return HttpResponse("error")
 
+	print('antes del filtro')
 	try:
 		if info['type'] == "f":
 			# FILTRAR POR FECHA
+			print('suuF')
 			eventos = EventoLimitado.objects.all()
 
 		elif info['type'] == "l":
 			# FILTRAR POR LOCALIDAD
-			eventos = EventoLimitado.objects.all()
+			print('suuL')
+
+			prov = info['info'][0]
+			
+			eventos = Evento.objects.all().filter(event_provincia=prov)
+			print('jejejejejej')
 
 		else:
 			# MOSTRAR TODO
 			eventos = EventoLimitado.objects.all()
 
-
+		print(eventos)
+		print('despues del filtro')
 		user = User.objects.get(username=info['username'])
 		prepareToSend = []
 		for evento in eventos:
-			if not UsuarioEventoLimitado.objects.filter(event_id=evento.id,user_id=user.id):
-				prepareToSend.append(evento.returnJSON())
-	
+			if EventoLimitado.objects.filter(event_id=evento.id):
+				event = EventoLimitado.objects.filter(event_id=evento.id)
+				#print(event)
+				#print(event[0].event_id)
+				#print(user.id)
+				if not UsuarioEventoLimitado.objects.filter(event_id=event[0].event_id,user_id=user.id):
+					print('llega')
+					print(evento)
+					print(event[0])
+					prepareToSend.append(event[0].returnJSON())
+				print('llega fuera')
+		
+		print(prepareToSend)
 		datos = json.dumps(prepareToSend)
+		return HttpResponse(datos)
 	except:
 		datos = "error"
 
@@ -295,7 +314,6 @@ def ourPerfil(request):
 	if not infoUser or 'name' not in infoUser:
 		return HttpResponse('false')
 
-	
 	try:
 		print(infoUser['name'])
 		info = User.objects.get(username=infoUser['name'])
@@ -311,7 +329,6 @@ def ourPerfil(request):
 def actualizarPerfil(request):
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
-	print('marc1')
 	if not infoUser:
 		return HttpResponse(datos)
 	
@@ -340,10 +357,8 @@ def actualizarPerfil(request):
 		user.email = infoUser['email']
 		user.set_password(infoUser['password'])
 		user.save()
-		print('lol')
 		datos = "true"
 	except:
-		print('marc3231')
 		datos = "false"
 
 	return HttpResponse(datos)
@@ -351,9 +366,7 @@ def actualizarPerfil(request):
 @csrf_exempt
 def eventosDeUsuario(request):
 	infoUser = json.loads(str(request.body,"UTF-8"))
-	print("marc1")
 	if not infoUser or 'name' not in infoUser:
-		print("marc2")
 		return HttpResponse('false')
 
 	try:
@@ -365,6 +378,24 @@ def eventosDeUsuario(request):
 			prepareToSend.append(recompensa.returnJSON())
 
 		datos = json.dumps(prepareToSend)
+		return HttpResponse(datos)
+	except:
+		return HttpResponse('false')
+
+@csrf_exempt
+def provincias(request):
+	infoUser = json.loads(str(request.body,"UTF-8"))
+	if not infoUser or 'name' not in infoUser:
+		return HttpResponse('false')
+	try:
+		provincias = Evento.objects.values_list('event_provincia').distinct()
+		#provincias = Evento.objects.values_list('event_provincia', flat=True).distinct()
+		prepareToSend = []
+		for provincia in provincias:
+			prepareToSend.append(provincia)
+		datos = json.dumps(prepareToSend)
+		#datos = serializers.serialize('json', list(prepareToSend), fields=('event_provincia'))
+		
 		return HttpResponse(datos)
 	except:
 		return HttpResponse('false')

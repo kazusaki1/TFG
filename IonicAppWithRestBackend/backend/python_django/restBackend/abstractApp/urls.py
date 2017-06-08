@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'lista/', views.lista, name='lista'),
     url(r'listaFiltrada', views.listaFiltrada, name='listaFiltrada'),
     url(r'evento/(?P<id>.*)/',views.evento, name='evento'),
+    url(r'provincias/', views.provincias, name='provincias'),
     url(r'eventoParada/',views.eventoParada, name='eventoParada'),
 	url(r'mapa/(?P<info>.*)$',views.mapa, name='mapa'),
 	url(r'^sendImage/$', views.sendImage, name='sendImage'),

@@ -102,7 +102,10 @@ class Evento(models.Model):
         verbose_name_plural = "Crear evento"
 
     def __str__(self):
-        return '['+str(self.id)+'] '+self.brand+': '+self.event_name+' '+self.reward.reward_name
+        return '['+str(self.id)+'] '+self.brand+': '+self.event_name#+' '+self.reward.reward_name
+
+    def returnProvincia(self):
+        return {'provincia':self.event_provincia}
 
 
 class EventoParada(models.Model):
