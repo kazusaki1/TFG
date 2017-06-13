@@ -127,16 +127,21 @@ def sendImage(request):
 
 @csrf_exempt
 def lista(request):
+	print("hi")
 	user = str(request.body,"UTF-8")
 	try:
 		user = User.objects.get(username=user)	
+		
+		#now = str(datetime.today()).split(".")[0]
+		#print(now)
 		eventos = EventoLimitado.objects.all()
+		#eventos = EventoLimitado.objects.filter(exp_date>=now)
 		prepareToSend = []
 		for evento in eventos:
 			if not UsuarioEventoLimitado.objects.filter(event_id=evento.id,user_id=user.id):
 				print(evento)
 				prepareToSend.append(evento.returnJSON())
-	
+		print(prepareToSend)
 		datos = json.dumps(prepareToSend)
 	except:
 		datos = "error"
@@ -176,8 +181,8 @@ def listaFiltrada(request):
 		for evento in eventos:
 			if EventoLimitado.objects.filter(event_id=evento.id):
 				event = EventoLimitado.objects.filter(event_id=evento.id)
-				#print(event)
-				#print(event[0].event_id)
+				print(event[0].exp_date)
+				print(event[0].ini_date)
 				#print(user.id)
 				if not UsuarioEventoLimitado.objects.filter(event_id=event[0].event_id,user_id=user.id):
 					print('llega')

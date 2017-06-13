@@ -13,16 +13,16 @@
 
 .app-icon {
     background-color: #fff;
-    background: url('../img/default-user-image.png') center;
+    background: url('../img/JustWinT2.png') center;
     background-size: cover;
     border-radius: 50%;
-    height: 125px;
-    margin: 0 auto;
-    /*margin-left: auto;
-    margin-top: 10;
+    height: 225px;
+    /*margin: 0 auto;*/
+    margin-left: auto;
+    margin-top: 30;
     margin-bottom: 0;
-    margin-right: auto;*/
-    width: 125px;
+    margin-right: auto;
+    width: 225px;
 }
 
 

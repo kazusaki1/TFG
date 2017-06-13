@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "ngCordova": "^0.1.27-alpha",
-    "animate.css": "^3.5.2"
+    "animate.css": "^3.5.2",
+    "ionic-datepicker": "^1.2.1"
   }
 }

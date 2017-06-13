@@ -1,11 +1,12 @@
 var module = angular.module('myIonicApp.controllers');
 
-module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoint,$cordovaGeolocation, Token, $localstorage){
+module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoint,$cordovaGeolocation, Token, $localstorage, ionicDatePicker){
 
   $scope.$on('$ionicView.enter', function() {
     Token.isToken()
     
   })
+  $scope.currentDate = new Date();
 
   $scope.lista = [];
   $http({
@@ -14,10 +15,21 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
     data: $localstorage.get('name')
   }).then(function successCallback(response) {
       $scope.lista = [];
+      var ahora = new Date()
+      console.log(ahora)
       for(var r in response.data) {
+
         console.log(response.data[r])
         var evento = response.data[r];
-        $scope.lista.push(evento);       
+        fechaE = new Date(evento.exp_date.slice(0,10));
+        if (fechaE > ahora){
+          console.log("evento mas grande")
+          $scope.lista.push(evento); 
+        }else{
+          console.log("ahora es mas grande")
+        }
+        console.log(fechaE)
+              
       };
 
   }, function errorCallback(response) {
@@ -53,6 +65,30 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
     if (selectedItem == 'Todos los eventos'){
       type = 't'
       $scope.tipo = 't'
+      $scope.lista = [];
+      $http({
+        method: 'POST',
+        url: ApiEndpoint.url+ 'lista/',
+        data: $localstorage.get('name')
+      }).then(function successCallback(response) {
+          var ahora = new Date()
+          $scope.lista = [];
+          for(var r in response.data) {
+            /*console.log(response.data[r])*/
+            var evento = response.data[r];
+
+            fechaE = new Date(evento.exp_date.slice(0,10));
+            if (fechaE > ahora){
+              console.log("evento mas grande")
+              $scope.lista.push(evento); 
+            }else{
+            console.log("ahora es mas grande")
+            }      
+          };
+
+      }, function errorCallback(response) {
+          console.log("ERROR");
+      });
     }else if (selectedItem == 'Localidad'){
       type = 'l'
       $scope.tipo = 'l'
@@ -77,13 +113,19 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
       url: ApiEndpoint.url+ 'listaFiltrada/',
       data: {'username' : $localstorage.get('name'), 'type' : tipo, 'info' : info}
     }).then(function successCallback(response) {
+      var ahora = new Date()
         $scope.lista = [];
-        console.log('try')
         for(var r in response.data) {
-          console.log(response.data[r])
+          /*console.log(response.data[r])*/
           var eventoPro = response.data[r];
-          $scope.lista.push(eventoPro); 
-          console.log($scope.selectedItem2)     
+          fechaE = new Date(eventoPro.exp_date.slice(0,10));
+            if (fechaE > ahora){
+              console.log("evento mas grande")
+              $scope.lista.push(eventoPro); 
+            }else{
+            console.log("ahora es mas grande")
+            }  
+          /*console.log($scope.selectedItem2)*/     
         };
     }, function errorCallback(response) {
         console.log("ERROR");

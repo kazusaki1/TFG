@@ -28,8 +28,10 @@
         </label>
       </div>
 
-      <div ng-show="selectedItem == 'Fecha'">gfdsfs
-        Fecha
+      <div ng-show="selectedItem == 'Fecha'">
+        <ionic-datepicker idate="currentDate" >
+          <button class="button button-block button-positive"> {{ currentDate | date:'dd - MMMM - yyyy' }} </button>
+        </ionic-datepicker>
       </div>
     </div>
           

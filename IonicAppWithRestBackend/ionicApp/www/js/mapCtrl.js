@@ -190,6 +190,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
           $scope.eventos = [];
           for(var r in response.data) {
             var evento = response.data[r];
+            //filtre de dates
             $scope.eventos.push(evento);
                
           }

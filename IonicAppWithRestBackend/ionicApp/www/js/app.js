@@ -1,4 +1,4 @@
-angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'ionic-material', 'ionMdInput'])
+angular.module('myIonicApp', ['ionic', 'myIonicApp.controllers', 'ngCordova', 'ionic-material', 'ionMdInput', 'ionic-datepicker'])
 
 .constant('ApiEndpoint',{
   url: 'http://192.168.1.33:8000/'
