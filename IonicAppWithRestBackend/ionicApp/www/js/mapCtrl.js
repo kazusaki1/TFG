@@ -18,7 +18,6 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
     // My marker
     var myMarker = new google.maps.Marker({
           map: map,
-          //icon: ApiEndpoint.url+"media/34250_GjGILec.png"
           icon: myImage
     }); 
 
@@ -59,6 +58,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
           $cordovaGeolocation.getCurrentPosition(options).then(function(position){ 
          
         latLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+        
         }, function(error){
           latLng = {lat: 41.411321, lng: 2.175568};
         });
@@ -191,14 +191,21 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
           for(var r in response.data) {
             var evento = response.data[r];
             //filtre de dates
-            $scope.eventos.push(evento);
-               
+            if (evento.ini_date){
+              var ahora = new Date()
+              fechaE = new Date(evento.exp_date.slice(0,10));
+              if (fechaE > ahora){
+                $scope.eventos.push(evento); 
+              } 
+            }else{
+              $scope.eventos.push(evento);
+            }
           }
           createMarkers();  
 
 
       }, function errorCallback(response) {
-          console.log("ERROR");
+          console.log("ERROR GetEvents");
       });     
 
     }
@@ -239,7 +246,7 @@ module.controller('MapCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$cordo
 
 
       }, function errorCallback(response) {
-          console.log("ERROR");
+          console.log("ERROR UpdateMap");
       });     
 
     }

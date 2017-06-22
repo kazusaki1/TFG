@@ -127,24 +127,17 @@ def sendImage(request):
 
 @csrf_exempt
 def lista(request):
-	print("hi")
 	user = str(request.body,"UTF-8")
 	try:
 		user = User.objects.get(username=user)	
-		
-		#now = str(datetime.today()).split(".")[0]
-		#print(now)
 		eventos = EventoLimitado.objects.all()
-		#eventos = EventoLimitado.objects.filter(exp_date>=now)
 		prepareToSend = []
 		for evento in eventos:
 			if not UsuarioEventoLimitado.objects.filter(event_id=evento.id,user_id=user.id):
-				print(evento)
 				prepareToSend.append(evento.returnJSON())
-		print(prepareToSend)
 		datos = json.dumps(prepareToSend)
 	except:
-		datos = "error"
+		datos = "ERROR Lista"
 	return HttpResponse(datos)
 
 @csrf_exempt
@@ -152,44 +145,27 @@ def listaFiltrada(request):
 
 	info = json.loads(str(request.body,"UTF-8"))
 	if not info or 'username' not in info or 'type' not in info or 'info' not in info:
-		return HttpResponse("error")
-
-	print('antes del filtro')
+		return HttpResponse("ERROR")
 	try:
 		if info['type'] == "f":
 			# FILTRAR POR FECHA
-			print('suuF')
 			eventos = EventoLimitado.objects.all()
 
 		elif info['type'] == "l":
 			# FILTRAR POR LOCALIDAD
-			print('suuL')
-
 			prov = info['info'][0]
 			
 			eventos = Evento.objects.all().filter(event_provincia=prov)
-			print('jejejejejej')
 
-		else:
-			# MOSTRAR TODO
-			eventos = EventoLimitado.objects.all()
-
-		print(eventos)
-		print('despues del filtro')
+		
 		user = User.objects.get(username=info['username'])
 		prepareToSend = []
 		for evento in eventos:
 			if EventoLimitado.objects.filter(event_id=evento.id):
 				event = EventoLimitado.objects.filter(event_id=evento.id)
-				print(event[0].exp_date)
-				print(event[0].ini_date)
 				#print(user.id)
 				if not UsuarioEventoLimitado.objects.filter(event_id=event[0].event_id,user_id=user.id):
-					print('llega')
-					print(evento)
-					print(event[0])
 					prepareToSend.append(event[0].returnJSON())
-				print('llega fuera')
 		
 		print(prepareToSend)
 		datos = json.dumps(prepareToSend)
@@ -206,13 +182,12 @@ def evento(request,id):
     prepareToSend = []
     prepareToSend.append(evento.returnJSON())
     datos = json.dumps(prepareToSend)
-    
+    print(datos)
     return HttpResponse(datos)
 
 
 @csrf_exempt
 def eventoParada(request):
-
 
 	info = json.loads(str(request.body,"UTF-8"))	
 	if info and 'username' in info and 'event_id' in info:
@@ -320,7 +295,6 @@ def ourPerfil(request):
 		return HttpResponse('false')
 
 	try:
-		print(infoUser['name'])
 		info = User.objects.get(username=infoUser['name'])
 		prepareToSend = []
 		prepareToSend.append(info.email)
@@ -335,6 +309,7 @@ def actualizarPerfil(request):
 	datos = "false"
 	infoUser = json.loads(str(request.body,"UTF-8"))
 	if not infoUser:
+		datos = "NOTINFO"
 		return HttpResponse(datos)
 	
 	if 'email' in infoUser and 'password' not in infoUser and 'confirmPassword' not in infoUser:
@@ -353,6 +328,7 @@ def actualizarPerfil(request):
 			datos = "true"
 			return HttpResponse(datos)
 		#pass incorrectas
+		datos = "WRONGPASS"
 		return HttpResponse(datos)
 	
 	try:
@@ -394,13 +370,11 @@ def provincias(request):
 		return HttpResponse('false')
 	try:
 		provincias = Evento.objects.values_list('event_provincia').distinct()
-		#provincias = Evento.objects.values_list('event_provincia', flat=True).distinct()
 		prepareToSend = []
 		for provincia in provincias:
 			prepareToSend.append(provincia)
 		datos = json.dumps(prepareToSend)
-		#datos = serializers.serialize('json', list(prepareToSend), fields=('event_provincia'))
-		
+		print(datos)
 		return HttpResponse(datos)
 	except:
 		return HttpResponse('false')

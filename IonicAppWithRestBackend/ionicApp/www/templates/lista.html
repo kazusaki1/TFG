@@ -27,12 +27,6 @@
         </select>
         </label>
       </div>
-
-      <div ng-show="selectedItem == 'Fecha'">
-        <ionic-datepicker idate="currentDate" >
-          <button class="button button-block button-positive"> {{ currentDate | date:'dd - MMMM - yyyy' }} </button>
-        </ionic-datepicker>
-      </div>
     </div>
           
           <div ng-repeat="evento in lista">
@@ -52,6 +46,7 @@
               </dic>
 
           </div>
-  
+
+
   </ion-content>
 </ion-view>

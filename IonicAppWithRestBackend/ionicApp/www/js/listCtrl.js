@@ -16,24 +16,16 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
   }).then(function successCallback(response) {
       $scope.lista = [];
       var ahora = new Date()
-      console.log(ahora)
       for(var r in response.data) {
-
-        console.log(response.data[r])
         var evento = response.data[r];
         fechaE = new Date(evento.exp_date.slice(0,10));
         if (fechaE > ahora){
-          console.log("evento mas grande")
           $scope.lista.push(evento); 
-        }else{
-          console.log("ahora es mas grande")
-        }
-        console.log(fechaE)
-              
+        }   
       };
 
   }, function errorCallback(response) {
-      console.log("ERROR");
+      console.log("ERROR Lista");
   }); 
 
     $http({
@@ -50,16 +42,16 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
           /*console.log(response.data)*/
           console.log($scope.listOfOptions2)
       }, function errorCallback(response) {
-          console.log("ERROR");
+          console.log("ERROR Provincia");
       });
 
   
 
-  $scope.listOfOptions = ['Todos los eventos', 'Localidad', 'Fecha'];
+  /*$scope.listOfOptions = ['Todos los eventos', 'Localidad', 'Fecha'];*/
+  $scope.listOfOptions = ['Todos los eventos', 'Localidad'];
   $scope.selectedItem = 'Todos los eventos'
 
   $scope.selectedItemChanged = function(selectedItem){
-    /*console.log($scope.listOfOptions)*/
     $scope.selectedItem = selectedItem
 
     if (selectedItem == 'Todos los eventos'){
@@ -74,15 +66,12 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
           var ahora = new Date()
           $scope.lista = [];
           for(var r in response.data) {
-            /*console.log(response.data[r])*/
             var evento = response.data[r];
 
             fechaE = new Date(evento.exp_date.slice(0,10));
             if (fechaE > ahora){
-              console.log("evento mas grande")
               $scope.lista.push(evento); 
             }else{
-            console.log("ahora es mas grande")
             }      
           };
 
@@ -104,8 +93,6 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
     console.log($scope.listOfOptions2)
     $scope.selectedItem2 = selectedItem
     $scope.lista = []
-    console.log($scope.tipo)
-    console.log($scope.selectedItem2)
     tipo = $scope.tipo
     info = $scope.selectedItem2
     $http({
@@ -116,19 +103,14 @@ module.controller('ListCtrl',function($scope,$http,$ionicPopup,$state,ApiEndpoin
       var ahora = new Date()
         $scope.lista = [];
         for(var r in response.data) {
-          /*console.log(response.data[r])*/
           var eventoPro = response.data[r];
           fechaE = new Date(eventoPro.exp_date.slice(0,10));
             if (fechaE > ahora){
-              console.log("evento mas grande")
               $scope.lista.push(eventoPro); 
-            }else{
-            console.log("ahora es mas grande")
-            }  
-          /*console.log($scope.selectedItem2)*/     
+            }    
         };
     }, function errorCallback(response) {
-        console.log("ERROR");
+        console.log("ERROR Filtro");
     });
   }
 

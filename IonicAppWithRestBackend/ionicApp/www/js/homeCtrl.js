@@ -16,19 +16,6 @@ module.controller('HomeCtrl',function($scope,$http,$ionicPopup,ApiEndpoint){
     }, function errorCallback(response) {
         console.log("ERROR");
     });
-    /*$scope.getDetails = function(smugler){
-		alert('hola');
-        var url = ApiEndpoint.url + 'smugglers/' + smugler.id+'/';
-        $http.get(url).then(function successCallback(response){
-            var alertPopup = $ionicPopup.alert({
-              title: 'More details',
-              template: ''+smugler.name+' '+smugler.lastname+' is a '+response.data+'',
-            });
-        },function errorCallback(response){
-            console.log("ERROR");
-        });
-    }
-    */
 })
 
 

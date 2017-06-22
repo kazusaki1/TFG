@@ -10,7 +10,7 @@ module.controller('RegisterCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$
 		var data = { confirmPassword : $scope.data.confirmPassword, username : $scope.data.username, email : $scope.data.email, password : $scope.data.password};
 		var success = false;
 		
-		$http({
+			$http({
 			method:'POST',
 			url: ApiEndpoint.url+'register/', 
 			data: data,
@@ -25,16 +25,18 @@ module.controller('RegisterCtrl',function($scope,$http,$ionicPopup,ApiEndpoint,$
 	            $state.go('app.login');
 	        else{
 				var alertPopup = $ionicPopup.alert({
-			      title: '<u>Register error</u>',
-			      template: 'Try again.'
+			      title: '<u>Error al registrar</u>',
+			      template: 'Prueba de nuevo.'
 			    })
 	        }
 
 		}, function errorCallback(response) {
 			console.log("LOGIN ERROR");
 		}) 
+		
 
       
-    }
+    
 
+}
 })

@@ -50,6 +50,20 @@ module.controller('PerfilCtrl', function($scope, $http, $ionicPopup, $state, $io
 			      template: 'Se ha modificado su perfil correctamente'
 			    })
 	            $state.go('app.home');
+
+			}if(succes == "WRONGPASS"){
+				var alertPopup = $ionicPopup.alert({
+				  title: '<u>Error al modificar datos</u>',
+			      template: 'Pass incorrectas'
+			    })
+	            $state.go('app.home');	
+
+			}if(succes == "NOTINFO"){
+				var alertPopup = $ionicPopup.alert({
+				 title: '<u>Error al modificar datos</u>',
+			      template: 'Hemos tenido un problema, prueba mas tarde. Gracias.'
+			    })
+	            $state.go('app.home');	
 			}
 				
 	        else{
