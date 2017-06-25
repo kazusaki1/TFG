@@ -1,6 +1,8 @@
 import PIL
 from PIL import Image
 import os
+import numpy
+from scipy import misc
 
 basewidth = 80
 baseheight = 80
@@ -30,6 +32,7 @@ for ficheroActual in os.listdir(ruta):
 			wpercent = (basewidth / float(img.size[0]))
 			hpercent = (baseheight / float(img.size[1]))
 			img = img.resize((basewidth, baseheight), PIL.Image.ANTIALIAS)
+
 			if len(img.getbands()) != 1 and len(img.getbands()) != 4:
 				img.save('clases/'+ficheroActual+'/'+imagen)
 			if len(img.getbands()) == 4:
@@ -48,4 +51,19 @@ for ficheroActual in os.listdir(ruta):
 				background.paste(img, mask=img.split()[1])
 				background.paste(img, mask=img.split()[2])
 				background.save('clases/'+ficheroActual+'/'+imagen)
-			
+
+
+
+			# Normalize image
+			image = misc.imread('clases/'+ficheroActual+'/'+imagen)
+			r = image[:,:,0]
+			g = image[:,:,1]
+			b = image[:,:,2]
+			if r.max() != r.min() and r.max()-r.min() > 50:
+				image[:,:,0] = (r-r.min())*(255.0/(r.max()-r.min()))
+				image[:,:,1] = (g-g.min())*(255.0/(g.max()-g.min()))
+				image[:,:,2] = (b-b.min())*(255.0/(b.max()-b.min()))
+			misc.imsave('clases/'+ficheroActual+'/'+imagen, image)
+
+			#if r.min() == 255:
+			#	os.remove(os.path.abspath(ruta+ficheroActual+'/'+imagen))

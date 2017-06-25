@@ -25,28 +25,37 @@ def parseDataset():
     #we use subfolders as class labels
     classes = [folder for folder in os.listdir(DATASET_PATH+"clases")]
  
-    #now we enlist all image paths
-    images = []
-    for c in classes:
-        images += ([os.path.join(DATASET_PATH+"clases", c, path) for path in os.listdir(os.path.join(DATASET_PATH+"clases", c))])
- 
-    #shuffle image paths
-    images = shuffle(images, random_state=42)
- 
-    #we want to use a 15% validation split
-    vsplit = int(len(images) * 0.15)
-    train = images[:-vsplit]
-    val = images[-vsplit:]
- 
+    ficheroTrain = open ('datasetTrain.txt')
+    ficheroTest = open ('datasetTest.txt')
+
+    image = '1'
+    train = []       
+    while image != '':
+        image = ficheroTrain.readline()
+        if image != '':
+            train.append(image)
+
+    image = '1'
+    test = []
+    while image != '':
+        image = ficheroTest.readline()
+        if image != '':
+            test.append(image)
+
+
+    ficheroTrain.close()
+    ficheroTest.close()
+
+
     #show some stats
     print("CLASS LABELS:", classes)
     print("TRAINING IMAGES:", len(train))
-    print("VALIDATION IMAGES:", len(val))
+    print("TESTING IMAGES:", len(test))
  
-    return classes, train, val
+    return classes, train, test
  
 #parse dataset
-CLASSES, TRAIN, VAL = parseDataset()
+CLASSES, TRAIN, TEST = parseDataset()
 
 
 def buildModel():
@@ -66,11 +75,15 @@ def buildModel():
     l_conv3 = lasagne.layers.Conv2DLayer(l_pool2, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
     l_pool3 = lasagne.layers.MaxPool2DLayer(l_conv3, pool_size=2)
  
-    #our cnn contains 3 dense layers, one of them is our output layer
-    l_dense1 = lasagne.layers.DenseLayer(lasagne.layers.dropout(l_pool3, p=.5), num_units=1024, nonlinearity=lasagne.nonlinearities.rectify)
-    #the output layer has 10 units which is exactly the count of our class labels
+    l_dense1 = lasagne.layers.DenseLayer(l_pool3, num_units=1024, nonlinearity=lasagne.nonlinearities.rectify)
+
+    l_drop1 = lasagne.layers.dropout(l_dense1, p=.5)
+
+    l_dense2 = lasagne.layers.DenseLayer(l_drop1, num_units=1024)
+
+    #the output layer has 11 units which is exactly the count of our class labels
     #it has a softmax activation function, its values represent class probabilities
-    l_output = lasagne.layers.DenseLayer(l_dense1, num_units=10, nonlinearity=lasagne.nonlinearities.softmax)
+    l_output = lasagne.layers.DenseLayer(l_dense2, num_units=11, nonlinearity=lasagne.nonlinearities.softmax)
  
     #let's see how many params our net has
     print("MODEL HAS", lasagne.layers.count_params(l_output), "PARAMS")
@@ -81,6 +94,10 @@ def buildModel():
     
  
 NET = buildModel()
+
+#with np.load(DATASET_PATH+'model.npz') as f:
+#    param_values = [f['arr_%d' % i] for i in range(len(f.files))]
+#lasagne.layers.set_all_param_values(NET, param_values)
 
 #################### LOSS FUNCTION ######################
 def calc_loss(prediction, targets):
@@ -130,7 +147,7 @@ train_net = theano.function([lasagne.layers.get_all_layers(NET)[0].input_var, ta
 print("DONE!")
  
 ################# PREDICTION FUNCTION ####################
-#we need the prediction function to calculate the validation accuracy
+#we need the prediction function to calculate the testing accuracy
 #this way we can test the net after training
 #first we need to get the net output
 net_output = lasagne.layers.get_output(NET)
@@ -144,7 +161,7 @@ print("DONE!")
 def loadImageAndTarget(path):
 
     #here we open the image
-    img = misc.imread(path)
+    img = misc.imread(path.replace('\\\\','\\')[:-1])
     
     #OpenCV uses BGR instead of RGB, but for now we can ignore that
     #our image has the shape (80, 80, 3) but we need it to be (3, 80, 80)
@@ -157,7 +174,7 @@ def loadImageAndTarget(path):
     index = CLASSES.index(label)
 
     #allocate array for target
-    target = np.zeros((10), dtype='float32')
+    target = np.zeros((11), dtype='float32')
 
     #we set our target array = 1.0 at our label index, all other entries remain zero
     #Example: if label = dog and dog has index 2 in CLASSES, target looks like: [0.0, 0.0, 1.0, 0.0, 0.0]
@@ -166,12 +183,12 @@ def loadImageAndTarget(path):
     #we need a 4D-vector for our image and a 2D-vector for our targets
     #we can adjust array dimension with reshape
     img = img.reshape(-1, 3, 80, 80)
-    target = target.reshape(-1, 10)
+    target = target.reshape(-1, 11)
 
     return img, target
 
 #a reasonable size for one batch is 100
-BATCH_SIZE = 100
+BATCH_SIZE = 50
 
 def getDatasetChunk(split):
 
@@ -184,8 +201,8 @@ def getNextImageBatch(split=TRAIN):
     #allocate numpy arrays for image data and targets
     #input shape of our ConvNet is (None, 3, 80, 80)
     x_b = np.zeros((BATCH_SIZE, 3, 80, 80), dtype='float32')
-    #output shape of our ConvNet is (None, 10) as we have 10 classes
-    y_b = np.zeros((BATCH_SIZE, 10), dtype='float32')
+    #output shape of our ConvNet is (None, 11) as we have 11 classes
+    y_b = np.zeros((BATCH_SIZE, 11), dtype='float32')
 
     #fill batch
     for chunk in getDatasetChunk(split):       
@@ -215,7 +232,7 @@ def showChart(epoch, t, v, a):
     #loss subplot
     plt.subplot(211)
     plt.plot(e, train_loss, 'r-', label='Train Loss')
-    plt.plot(e, val_loss, 'b-', label='Val Loss')
+    plt.plot(e, test_loss, 'b-', label='Test Loss')
     plt.ylabel('loss')
  
     #show labels only once
@@ -226,7 +243,7 @@ def showChart(epoch, t, v, a):
  
     #accuracy subplot
     plt.subplot(212)
-    plt.plot(e, val_accuracy, 'g-')
+    plt.plot(e, test_accuracy, 'g-')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
  
@@ -242,8 +259,8 @@ def clearConfusionMatrix():
  
     global cmatrix
  
-    #allocate empty matrix of size 5x5 (for our 5 classes)
-    cmatrix = np.zeros((10, 10), dtype='int32')
+    #allocate empty matrix of size 11x11 (for our 11 classes)
+    cmatrix = np.zeros((11, 11), dtype='int32')
  
 def updateConfusionMatrix(p, t):
  
@@ -292,17 +309,19 @@ def showConfusionMatrix():
 print("START TRAINING...")
 
 train_loss = []
-val_loss = []
-val_accuracy = []
+test_loss = []
+test_accuracy = []
 total_time = time.time()
+ficheroResult = open (str(BATCH_SIZE) + '_result.txt', 'w')
 
 for epoch in range(0, 2000):
+
+    ficheroResult.write("EPOCH: " + str(epoch) + ':\n')
  
     #start timer
     start_time = time.time()
     
-    clearConfusionMatrix()
- 
+     
     #iterate over train split batches and calculate mean loss for epoch
     t_l = []
     for image_batch, target_batch in getNextImageBatch():
@@ -311,33 +330,55 @@ for epoch in range(0, 2000):
         l = train_net(image_batch, target_batch)
         t_l.append(l)
  
-    #we validate our net every epoch and pass our validation split through as well
-    v_l = []
-    v_a = []
-    for image_batch, target_batch in getNextImageBatch(VAL):
-        
-        #calling the test function returns the net output, loss and accuracy
-        prediction_batch, l, a = test_net(image_batch, target_batch)
-        v_l.append(l)
-        v_a.append(a)
-        updateConfusionMatrix(prediction_batch,target_batch)
- 
- 
     #calculate stats for epoch
     train_loss.append(np.mean(t_l))
-    val_loss.append(np.mean(v_l))
-    val_accuracy.append(np.mean(v_a))
- 
-    if epoch % 100 == 0 and epoch > 0: 
-        np.savez(DATASET_PATH+'model'+str(epoch)+'.npz', *lasagne.layers.get_all_param_values(NET))
-	#print stats for epoch
+
     print("EPOCH:", epoch)
     print("TRAIN LOSS:", train_loss[-1])
-    print("VAL LOSS:", val_loss[-1])
-    print("VAL ACCURACY:", (int(val_accuracy[-1] * 1000) / 10.0), "%")
-    print("TIME:", (time.time() - start_time), "s")
+    ficheroResult.write(" TRAIN LOSS: " + str(train_loss[-1]) + '\n')
+    if epoch % 50 == 0:
+        clearConfusionMatrix()
+        #we test our net every epoch and pass our testing split through as well
+        v_l = []
+        v_a = []
+        for image_batch, target_batch in getNextImageBatch(TEST):
+            
+            #calling the test function returns the net output, loss and accuracy
+            prediction_batch, l, a = test_net(image_batch, target_batch)
+            v_l.append(l)
+            v_a.append(a)
+
+            contClass = 0
+            tmpMatrix = np.zeros((1, 11), dtype='float32')
+            for value in target_batch:
+                tmpMatrix += value
+
+            for value in tmpMatrix[0]:
+                if value != 0:
+                    contClass += 1
+
+            if contClass == len(CLASSES):
+                updateConfusionMatrix(prediction_batch,target_batch)
+
+        test_loss.append(np.mean(v_l))
+        test_accuracy.append(np.mean(v_a))
+        print("TEST LOSS:", test_loss[-1])
+        print("TEST ACCURACY:", (int(test_accuracy[-1] * 1000) / 10.0), "%")
+        showConfusionMatrix()
+        ficheroResult.write(" TEST LOSS: " + str(test_loss[-1]) + '\n')
+        ficheroResult.write(" TEST ACCURACY: " + str(int(test_accuracy[-1] * 1000) / 10.0) + '%\n')
+
  
-    showConfusionMatrix()
+    if epoch % 100 == 0: 
+        np.savez(DATASET_PATH+'model'+str(epoch)+'batch'+str(BATCH_SIZE)+'.npz', *lasagne.layers.get_all_param_values(NET))
+	#print stats for epoch
+    
+    
+    print("TIME:", (time.time() - start_time), "s")
+    ficheroResult.write(" TIME: " + str((time.time() - start_time)) + 's\n')
+    
+ 
+    
 	
 
 

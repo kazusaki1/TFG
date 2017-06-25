@@ -52,34 +52,38 @@ def loadModel():
 
 	def buildModel():
 	 
-		#this is our input layer with the inputs (None, dimensions, width, height)
-		l_input = lasagne.layers.InputLayer((None, 3, 80, 80))
+	    #this is our input layer with the inputs (None, dimensions, width, height)
+	    l_input = lasagne.layers.InputLayer((None, 3, 80, 80))
 	 
-		#first convolutional layer, has l_input layer as incoming and is followed by a pooling layer
-		l_conv1 = lasagne.layers.Conv2DLayer(l_input, num_filters=32, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
-		l_pool1 = lasagne.layers.MaxPool2DLayer(l_conv1, pool_size=2)
+	    #first convolutional layer, has l_input layer as incoming and is followed by a pooling layer
+	    l_conv1 = lasagne.layers.Conv2DLayer(l_input, num_filters=32, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
+	    l_pool1 = lasagne.layers.MaxPool2DLayer(l_conv1, pool_size=2)
 	 
-		#second convolution (l_pool1 is incoming), let's increase the number of filters
-		l_conv2 = lasagne.layers.Conv2DLayer(l_pool1, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
-		l_pool2 = lasagne.layers.MaxPool2DLayer(l_conv2, pool_size=2)
+	    #second convolution (l_pool1 is incoming), let's increase the number of filters
+	    l_conv2 = lasagne.layers.Conv2DLayer(l_pool1, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
+	    l_pool2 = lasagne.layers.MaxPool2DLayer(l_conv2, pool_size=2)
 	 
-		#third and final convolution, even more filters
-		l_conv3 = lasagne.layers.Conv2DLayer(l_pool2, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
-		l_pool3 = lasagne.layers.MaxPool2DLayer(l_conv3, pool_size=2)
+	    #third and final convolution, even more filters
+	    l_conv3 = lasagne.layers.Conv2DLayer(l_pool2, num_filters=64, filter_size=3, nonlinearity=lasagne.nonlinearities.rectify)
+	    l_pool3 = lasagne.layers.MaxPool2DLayer(l_conv3, pool_size=2)
 	 
-		#our cnn contains 3 dense layers, one of them is our output layer
-		l_dense1 = lasagne.layers.DenseLayer(lasagne.layers.dropout(l_pool3, p=.5), num_units=1024, nonlinearity=lasagne.nonlinearities.rectify)
-		#the output layer has 10 units which is exactly the count of our class labels
-		#it has a softmax activation function, its values represent class probabilities
-		l_output = lasagne.layers.DenseLayer(l_dense1, num_units=10, nonlinearity=lasagne.nonlinearities.softmax)
+	    l_dense1 = lasagne.layers.DenseLayer(l_pool3, num_units=1024, nonlinearity=lasagne.nonlinearities.rectify)
+
+	    l_drop1 = lasagne.layers.dropout(l_dense1, p=.5)
+
+	    l_dense2 = lasagne.layers.DenseLayer(l_drop1, num_units=1024)
+
+	    #the output layer has 11 units which is exactly the count of our class labels
+	    #it has a softmax activation function, its values represent class probabilities
+	    l_output = lasagne.layers.DenseLayer(l_dense2, num_units=11, nonlinearity=lasagne.nonlinearities.softmax)
 	 
-		#let's see how many params our net has
-		print("MODEL HAS", lasagne.layers.count_params(l_output), "PARAMS")
+	    #let's see how many params our net has
+	    print("MODEL HAS", lasagne.layers.count_params(l_output), "PARAMS")
 	 
-		#we return the layer stack as our network by returning the last layer
-		return l_output
-		
-		
+	    #we return the layer stack as our network by returning the last layer
+	    return l_output
+	    
+	    
 	 
 	NET = buildModel()
 
@@ -191,8 +195,8 @@ def loadModel():
 	 
 		global cmatrix
 	 
-		#allocate empty matrix of size 5x5 (for our 5 classes)
-		cmatrix = np.zeros((10, 10), dtype='int32')
+		#allocate empty matrix of size 11x11 (for our 11 classes)
+		cmatrix = np.zeros((11, 11), dtype='int32')
 	 
 	def updateConfusionMatrix(p, t):
 	 

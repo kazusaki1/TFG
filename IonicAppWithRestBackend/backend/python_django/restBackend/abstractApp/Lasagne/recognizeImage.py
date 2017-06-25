@@ -22,78 +22,88 @@ import matplotlib.pyplot as plt
 
 def main(image_name, test_net, brand):
 
-	classes_path = os.getcwd()+'\\abstractApp\\Lasagne\\' #change the path to your dataset folder here
+	classes_path = os.getcwd()+'\\abstractApp\\Lasagne\\'
 	img_path = os.getcwd()+"\\uploaded_media\\"+image_name
 	tmp_path = os.getcwd()+"\\uploaded_media\\tmp"+image_name
 	classes = [folder for folder in os.listdir(classes_path+"clases")]
 
 	print("Imagen:"+image_name)
 
-	for x in range(0,7):
+	index = classes.index("random")
 
-		image = transformImage(image_name,img_path,tmp_path,x)
+	target = np.zeros((11), dtype='float32')
 
+	target[index] = 1.0
 
-		#we need to get the index of our label from classes
-		index = classes.index("random")
-
-		#allocate array for target
-		target = np.zeros((10), dtype='float32')
-
-		#we set our target array = 1.0 at our label index, all other entries remain zero
-		#Example: if label = dog and dog has index 2 in classes, target looks like: [0.0, 0.0, 1.0, 0.0, 0.0]
-		target[index] = 1.0
-
-		#we need a 4D-vector for our image and a 2D-vector for our targets
-		#we can adjust array dimension with reshape
-		image = image.reshape(-1, 3, 80, 80)
-		target = target.reshape(-1, 10)
-		#mostrarConfusionMatrix()
-		prediction, l, a = test_net(image, target)
-		
-		maxValue = 0
-		maxInd = 0
-		cont = 0
-		for value in prediction[0]:
-			if maxValue < value:
-				maxValue = value
-				maxInd = cont	
-			cont = cont + 1
-
-		print("Resultado " + str(x) + ": " + classes[maxInd] + " con " + str(maxValue) + ", Esperado: " + brand)
-
-		
-		if maxValue > 0.7 and brand == classes[maxInd]:
-			return "true"
-
-	return "false"
-
-def transformImage(image_name,img_path,tmp_path,crop):
+	target = target.reshape(-1, 11)
 
 	img = Image.open(img_path)
-	w, h = img.size
-	if crop == 1:
-		img = img.crop((0, 0, w/2, h))
-	elif crop == 2:
-		img = img.crop((0, 0, w, h/2))
-	elif crop == 3:
-		img = img.crop((0, 0, w/2, h/2))
-	elif crop == 4:
-		img = img.crop((w/2, 0, w, h/2))
-	elif crop == 5:
-		img = img.crop((0, h/2, w/2, h))
-	elif crop == 6:
-		img = img.crop((w/2, h/2, w, h))
 
-	wpercent = (80 / float(img.size[0]))
-	hpercent = (80 / float(img.size[1]))
-	img = img.resize((80, 80), PIL.Image.ANTIALIAS)
-	img.save(tmp_path)
+	for i in range(1,5):
+		image = misc.imread(img_path)
+		
+		w = len(image[0])
+		h = len(image)
+
+		if w > h:
+			diff = float(h)/80.0		
+			
+		else:
+			diff = float(w)/80.0
+
+		image = misc.imresize(image,[int(h/diff)*i,int(w/diff)*i])
+		print(misc.info(image))
+
+		# Normalize image
+		r = image[:,:,0]
+		g = image[:,:,1]
+		b = image[:,:,2]
+		if r.max() != r.min() and r.max()-r.min() > 50:
+			image[:,:,0] = (r-r.min())*(255.0/(r.max()-r.min()))
+			image[:,:,1] = (g-g.min())*(255.0/(g.max()-g.min()))
+			image[:,:,2] = (b-b.min())*(255.0/(b.max()-b.min()))
 
 
-	#here we open the image
-	image = misc.imread(tmp_path)
-	image = np.transpose(image, (2, 0, 1))
-	os.remove(tmp_path)
+		w = len(image[0])
+		h = len(image)
+		desp = 40
+		size = 80
+		currentW = 0
+		currentH = 0
 
-	return image
+		while currentH <= h:
+			if h - currentH < size:
+				currentH = h - size
+			if w - currentW < size:
+				currentW = w - size
+
+			tmp = image[currentH:currentH+size,currentW:currentW+size]
+
+			tmp = tmp.reshape(-1, 3, 80, 80)
+
+			prediction, l, a = test_net(tmp, target)
+			
+			maxValue = 0
+			maxInd = 0
+			cont = 0
+			for value in prediction[0]:
+				if maxValue < value:
+					maxValue = value
+					maxInd = cont	
+				cont = cont + 1
+
+			print("Resultado: " + classes[maxInd] + " con " + str(maxValue) + ", Esperado: " + brand)
+
+			
+			if maxValue > 0.7 and brand == classes[maxInd]:
+				return "true"
+
+			currentW = currentW + desp
+			if currentW + desp >= w:
+				currentW = 0
+				if currentH + size >= h:
+					currentH = h + 1
+				else:
+					currentH = currentH + desp
+
+	return "false"
